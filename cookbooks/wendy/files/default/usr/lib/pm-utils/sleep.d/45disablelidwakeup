@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# http://ubuntuforums.org/showthread.php?t=293883
+# http://askubuntu.com/questions/152403/how-do-i-make-changes-to-proc-acpi-wakeup-permanent
+
+case $1 in
+    hibernate)
+            echo "Going to suspend to disk!"
+            ;;
+    suspend)
+            echo "Disabling LID wakeup."
+            state=`cat /proc/acpi/wakeup | grep "^LID\s" | cut -f3 | cut -d' ' -f1 | tr -d '*'`
+            echo "LID wakeup is $state"
+            if [ "$state" == "enabled" ]; then
+                echo " LID" > /proc/acpi/wakeup
+            fi
+            echo "Suspending to RAM."
+            ;;
+    thaw)
+            echo "Suspend to disk is now over!"
+            ;;
+    resume)
+            echo "We are now resuming."
+            ;;
+    *)
+            echo "Somebody is callin me totally wrong."
+            ;;
+esac

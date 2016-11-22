@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+
+import sys
+import json
+import gzip
+# sudo pip install py2-ipaddress
+from ipaddress import IPv4Address, IPv4Network
+
+ips = []
+
+def show_short(record, filename, networks=[]):
+    if len(networks) > 0:
+        try:
+            record_ip = IPv4Address(record['sourceIPAddress'])
+        except:
+            # Not an IP
+            return False
+    for network in networks:
+        if record_ip not in IPv4Network(network):
+            return False
+
+    # print("%s %s:%s" % (record['eventTime'], record['eventSource'], record['eventName']))
+    if 'userIdentity' in record:
+        if record['userIdentity']['type'] == "IAMUser":
+            identity = "%s:%s" % (record['userIdentity']['userName'], record['userIdentity']['type'])
+        elif record['userIdentity']['type'] == "AssumedRole":
+            if 'sessionContext' in record['userIdentity']:
+                try:
+                    identity = "%s:%s" % (record['userIdentity']['sessionContext']['sessionIssuer']['userName'], record['userIdentity']['type'])
+                except:
+                    identity = "unknown:unknown"
+                    print(record)
+            elif 'arn' in record['userIdentity']:
+                identity = "%s:%s" % (record['userIdentity']['arn'], record['userIdentity']['type'])
+        elif record['userIdentity']['type'] == "Root":
+            identity = "%s:%s" % ('Root', record['userIdentity']['type'])
+        elif record['userIdentity']['type'] == "Unknown":
+            identity = "unknown:unknown"
+        else:
+            identity = "unknown:unknown"
+            print(record)
+    else:
+        user = "unknown:unknown"
+        print(record)
+    print("%s %s %s@%s %s:%s" % (filename, record['eventTime'], identity, record['sourceIPAddress'], record['eventSource'], record['eventName']))
+
+def show_long(record, filename, event_name=None):
+    record['filename'] = filename
+    if event_name is not None and record['eventName'] != event_name:
+        return False
+    print(json.dumps(record, sort_keys=True, indent=4,  separators=(',', ': ')))
+
+with open(sys.argv[1]) as f:
+    j = json.load(f)
+    for record in j['Records']:
+        # show_short(record, sys.argv[1], networks=['109.188.124.0/24', '178.209.0/24', '213.108.248.0/24', '209.126.101.0/24'])
+        show_short(record, sys.argv[1])
+        # show_long(record, sys.argv[1], 'CreateBucket')
+        # show_long(record, sys.argv[1], 'RequestSpotInstances')

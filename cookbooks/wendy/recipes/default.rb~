@@ -1,0 +1,49 @@
+#
+# Cookbook Name:: wendy
+# Recipe:: default
+#
+# Copyright 2015, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+include_recipe 'git'
+
+package 'eclipse-platform'
+package 'sshfs'
+package 'unity-lens-shopping' do
+  action :remove
+end
+
+apt_repository 'sublime-text-3' do
+  uri 'ppa:webupd8team/sublime-text-3'
+  distribution node['lsb']['codename']
+  components ['main']
+  keyserver 'keyserver.ubuntu.com'
+  key 'EEA14886'
+end
+
+package 'sublime-text-installer'
+
+directory "/home/#{node['base_user']}/.config/sublime-text-3" do
+  user node['base_user']
+  group node['base_user']
+  mode '600'
+end
+
+directory "/home/#{node['base_user']}/.config/sublime-text-3/Local" do
+  user node['base_user']
+  group node['base_user']
+  mode '600'
+end
+
+file "/home/#{node['base_user']}/.config/sublime-text-3/Local/License.sublime_license" do
+  user node['base_user']
+  group node['base_user']
+  mode '644'
+  content node['sublime-text']['license']
+end
+
+
+#TODO add sublime text license
+

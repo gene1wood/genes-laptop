@@ -1,0 +1,12 @@
+[distutils] # this tells distutils what package indexes you can push to
+index-servers =
+    pypi
+    pypitest
+
+[pypi]
+repository: https://pypi.python.org/pypi
+username: gene1wood
+
+[pypitest]
+repository: https://testpypi.python.org/pypi
+username: gene1wood

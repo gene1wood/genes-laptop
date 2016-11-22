@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Colorise less
+export LESS_TERMCAP_mb=$'\E[01;31m'    # blinking
+export LESS_TERMCAP_md=$'\E[01;34m'    # bold
+export LESS_TERMCAP_so=$'\E[01;44;33m' # standout
+export LESS_TERMCAP_us=$'\E[01;33m'    # underline
+export LESS_TERMCAP_me=$'\E[0m'        # end all modes
+export LESS_TERMCAP_se=$'\E[0m'        # end standout
+export LESS_TERMCAP_ue=$'\E[0m'        # end underline
+
+# Unlimited bash history
+# http://blog.sanctum.geek.nz/better-bash-history/
+# http://stackoverflow.com/a/19533853/168874
+shopt -s histappend
+export HISTFILESIZE=
+export HISTSIZE=
+export HISTTIMEFORMAT="[%F %T] "
+
+# Change the file location because certain bash sessions truncate .bash_history file upon close.
+# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
+export HISTFILE=~/.bash_eternal_history
+
+# Force prompt to write history after every command.
+# http://superuser.com/questions/20900/bash-history-loss
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# save all lines of a multiple-line command in the same history entry
+shopt -s cmdhist
+
+# fix spelling errors for cd, only in interactive shell
+shopt -s cdspell
+
+# set default editor
+export EDITOR='/opt/sublime_text/sublime_text -w'
+
+# If you're looking for the export statements
+# that set environment variables, go check in
+# ~/.pam_environment
+
+# Set prompt
+PS1="\d \t $PS1"
+. ~/bin/setprompt
+
+if [[ TERM=="xterm" && COLORTERM==gnome* ]]; then
+    export TERM="xterm-256color"
+    color_prompt=yes
+fi

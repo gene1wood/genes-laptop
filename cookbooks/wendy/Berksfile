@@ -1,0 +1,12 @@
+source "https://api.berkshelf.com"
+
+# The "metadata" line is commented out so that berkshelf doesn't fetch path specific cookbooks enumerated in
+# wendy/metadata.rb from opscode and instead only fetches the cookbooks listed below and their
+# dependencies
+
+# metadata
+cookbook 'git', '~> 4.3.3'
+cookbook 'apt'
+cookbook 'firewall'
+cookbook 'desktop', '>= 0.1.1', path: '/home/gene/code/github.com/gene1wood/cookbook-desktop'
+cookbook 'apache2'

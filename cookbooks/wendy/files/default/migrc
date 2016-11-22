@@ -1,0 +1,5 @@
+[api]
+    url = "https://api.mig.mozilla.org/api/v1/"
+[gpg]
+    home = "/home/gene/Documents/Private/Keys and Certs/gpg/"
+    keyid = "17C0E798512E2ED181E24FF4F0A9E7DCD39E452E"

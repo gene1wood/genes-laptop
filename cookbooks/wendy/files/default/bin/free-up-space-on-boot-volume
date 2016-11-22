@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# http://askubuntu.com/questions/89710/how-do-i-free-up-more-space-in-boot
+sudo apt-get purge $(dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve "$(uname -r | sed -r 's/-[a-z]+//')")

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sparkleshare>
+    <plugin>
+        <info>
+            <name><%= @hostname %></name>
+            <description>ssh://<%= @username %>@<%= @hostname %></description>
+            <icon>own-server.png</icon>
+        </info>
+        <address>
+            <value>ssh://<%= @username %>@<%= @hostname %></value>
+            <example/>
+        </address>
+        <path>
+            <value><%= @path %></value>
+            <example>/path/to/project</example>
+        </path>
+    </plugin>
+</sparkleshare>
+

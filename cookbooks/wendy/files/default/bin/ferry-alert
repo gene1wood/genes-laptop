@@ -1,0 +1,40 @@
+#!/bin/bash
+
+: <<'END'
+    Crontab
+
+    # m h  dom mon dow   command
+    50 14 * * 1-5 $HOME/bin/ferry-alert 5
+    54 14 * * 1-5 $HOME/bin/ferry-alert 1
+    55 14 * * 1-5 $HOME/bin/ferry-alert 0
+    05 16 * * 1-5 $HOME/bin/ferry-alert 5
+    09 16 * * 1-5 $HOME/bin/ferry-alert 1
+    10 16 * * 1-5 $HOME/bin/ferry-alert 0
+    55 16 * * 1-5 $HOME/bin/ferry-alert 5
+    59 16 * * 1-5 $HOME/bin/ferry-alert 1
+    0  17 * * 1-5 $HOME/bin/ferry-alert 0
+    15 17 * * 1-5 $HOME/bin/ferry-alert 5
+    19 17 * * 1-5 $HOME/bin/ferry-alert 1
+    20 17 * * 1-5 $HOME/bin/ferry-alert 0
+END
+
+time_to_walk_to_ferry=20
+
+if $HOME/bin/we-are-at-mozilla; then
+    if [ "$1" ]; then
+        minutes="$1"
+    else
+        minutes="0"
+    fi
+    if [ "$minutes" == "0" ]; then
+        prefix="now"
+    else
+        prefix="in $minutes minutes"
+    fi
+    departuretime="`expr $minutes + $time_to_walk_to_ferry`"
+    message="Leave $prefix to catch the `date -d "$departuretime minutes" +"%_I:%M%P"` ferry"
+    DISPLAY=:0 /usr/bin/notify-send "$message"
+    echo "`date` : $message" >> $HOME/bin/ferry-alert.log
+else
+    echo "`date` : IP is not at mozilla" >> $HOME/bin/ferry-alert.log
+fi

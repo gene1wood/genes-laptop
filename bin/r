@@ -1,0 +1,14 @@
+#!/bin/bash
+
+JSON_ATTRIBUTES="/home/gene/Documents/Secrets/wendy/node.json"
+
+if test ! -e "$JSON_ATTRIBUTES"; then
+  echo "missing $JSON_ATTRIBUTES . Exiting"
+  exit 1
+fi
+
+BERKSHELF_PATH=/root/.berkshelf berks install --berksfile=/home/gene/code/github.com/gene1wood/genes-laptop/cookbooks/wendy/Berksfile
+BERKSHELF_PATH=/root/.berkshelf berks vendor --berksfile=/home/gene/code/github.com/gene1wood/genes-laptop/cookbooks/wendy/Berksfile /opt/chef/cookbooks
+ln -s /home/gene/code/github.com/gene1wood/genes-laptop/cookbooks/wendy /opt/chef/cookbooks/wendy
+rm /opt/chef/nodes/wendy.json
+(cd /opt/chef/cookbooks && chef-client --local-mode --json-attributes "$JSON_ATTRIBUTES" $*)

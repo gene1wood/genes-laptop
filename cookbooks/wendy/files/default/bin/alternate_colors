@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+from __future__ import print_function
+import fileinput
+x=True
+for line in fileinput.input():
+    if x:
+        print('\033[92m' + line + '\033[0m')
+        x=False
+    else:
+        print(line)
+        x=True

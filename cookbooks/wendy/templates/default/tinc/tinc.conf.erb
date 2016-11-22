@@ -1,0 +1,6 @@
+Name = <%= @hostname %>
+<% for @item in @peers %>
+ConnectTo = <%= @item['name'] %>
+<% end %>
+Interface = tincvpn0
+#Mode = switch

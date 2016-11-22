@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# -D SOCKS port
+# -f fork to the background
+# -C enable compression
+# -q quiet
+# -N do not execute a remote command
+ssh -D 8124 -f -C -q -N ssh.mozilla.com

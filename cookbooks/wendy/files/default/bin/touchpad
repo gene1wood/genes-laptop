@@ -1,0 +1,10 @@
+#!/bin/bash
+
+line="`xinput list | grep 'SynPS/2 Synaptics TouchPad'`"
+inputid="`echo "$line" | sed  's/.*id=\([0-9]*\).*/\1/'`"
+current_state="`xinput list-props $inputid | grep "^\s*Device Enabled" | sed 's/.*:\s*\([0-9]\)/\1/g'`"
+new_state=$((current_state ^ 1))
+echo "Toggling id $inputid to $new_state"
+echo "$line"
+# xinput --enable $inputid
+xinput --set-prop $inputid "Device Enabled" $new_state

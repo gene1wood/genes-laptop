@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=2.2.0
+Name=LiClipse
+Comment=IDE for Python/Django developers
+Exec=env UBUNTU_MENUPROXY=0 /opt/liclipse/LiClipse
+Icon=/opt/liclipse/icon.xpm
+Terminal=false
+Type=Application
+Categories=Utility;Application;Development;IDE

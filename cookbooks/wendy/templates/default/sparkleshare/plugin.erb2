@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sparkleshare>
+    <plugin>
+        <info>
+            <name><%= @storage_server %></name>
+            <description><%= @storage_server %></description>
+            <icon>own-server.png</icon>
+        </info>
+        <address>
+            <value><%= @storage_url %></value>
+            <example/>
+        </address>
+        <path>
+            <value><%= @storage_path %></value>
+            <example>/path/to/project</example>
+        </path>
+    </plugin>
+</sparkleshare>

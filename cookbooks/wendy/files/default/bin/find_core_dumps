@@ -1,0 +1,3 @@
+#!/bin/bash
+
+find / -name core -size +30M -exec bash -c "if file {} | grep 'core file' > /dev/null; then echo {}; fi" \;

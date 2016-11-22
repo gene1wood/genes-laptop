@@ -1,0 +1,30 @@
+default["sublime-text"]["license"] = "----- BEGIN LICENSE -----\Example License\n5 User License\nxxxxxxxxxx\n------ END LICENSE ------"
+default["smartgit"]["license"] = "Format=2\nName=Example\nAddress=123 Frist St., San Francisco, California, United States\nEmail=user@example.com\nContact=John-Doe\nPurchaseId=123456\nLicenseCount=1\nFreeUpdatesUntil=2016-01-01\nSupportUntil=2015-01-01\nCustomer=123456\nProduct=SmartGit\nxxxxxxxxxx\n"
+default["base_user"]["username"] = "jdoe"
+default["base_user"]["fullname"] = "John Doe"
+default["base_user"]["email"] = "jdoe@example.com"
+default["chrome"]["profiles"] = []
+default["firefox"]["profiles"] = ["example"]
+default["firefox"]["default"] = "example"
+default["sparkleshare"]["username"] = "examplesparkelshareuser"
+default["sparkleshare"]["hostname"] = "sparkleshare.example.com"
+default["sparkleshare"]["path"] = "/path/to/serverside/sparkleshare/repo"
+default["sparkleshare"]["private_key"] = "-----BEGIN RSA PRIVATE KEY-----\nxxxxxxxxxxxx\n-----END RSA PRIVATE KEY-----\n"
+default["sparkleshare"]["public_key"] = "ssh-rsa xxxxxxxx jdoe@example.com\n"
+default["sparkleshare"]["encfs_source"] = "/path/to/local/encfs/BoxCryptor.bc",
+default["sparkleshare"]["encfs_target"] = "/path/to/local/mount/location"
+default["nfs"]["public"]["cidrs"] = ["127.0.0.0/8"]
+default["tinc"]["peers"] = [{"name" => "example",
+                             "internal_ip"=> "172.30.0.1/32",
+                             "external_ip"=> "www.example.com",
+                             "public_key"=> "-----BEGIN RSA PUBLIC KEY-----\nxxxxxxxxxx\n-----END RSA PUBLIC KEY-----\n"}]
+default["tinc"]["ip"] = "172.30.0.2"
+default["tinc"]["private_key"] = "\n-----BEGIN RSA PRIVATE KEY-----\nxxxxxxxxx\n-----END RSA PRIVATE KEY-----\n"
+default["tinc"]["public_key"] = "\n-----BEGIN RSA PUBLIC KEY-----\nxxxxxxxxx\n-----END RSA PUBLIC KEY-----\n"
+default["gpg"]["basedir"] = "/path/to/local/gpg/store"
+default["gpg"]["default_key"] = "ABCDEF12"
+default["crashplan"] = []
+default["btsync"]["webui"]["password"] = "btsync"
+default["btsync"]["webui"]["password_hash"] = "00rJrYI5XrPtU"
+default["btsync"]["webui"]["port"] = 42000
+default["btsync"]["port"] = 42146

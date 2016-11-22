@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<keys name="Right Handed Illustration">
+  <bind key="F12" modifiers="Shift" action="ObjectFlowtextToText" display="true"/>
+
+  <!-- http://sourceforge.net/projects/inkscape-tables/ -->
+  <bind key="C" modifiers="Ctrl,Shift,Alt" action="org.greygreen.inkscape.effects.table_create" display="true"/>
+  <bind key="D" modifiers="Ctrl,Shift,Alt" action="org.greygreen.inkscape.effects.table_duplicate" display="true"/>
+  <bind key="T" modifiers="Ctrl,Shift,Alt" action="org.greygreen.inkscape.effects.table_edit_text" display="true"/>
+</keys>

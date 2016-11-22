@@ -1,0 +1,4 @@
+[NFS]
+title=Network File System (NFS)
+description=Network File System (NFS) is a distributed file system protocol.
+ports=111,2049,32765,32766,32767/udp|111,2049,32765,32766,32767/tcp

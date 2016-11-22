@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# http://askubuntu.com/questions/40931/where-are-the-unity-launcher-desktop-files
+
+find ~/.local/share/applications /usr/share/applications/ $*

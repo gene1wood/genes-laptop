@@ -1,0 +1,10 @@
+#!/bin/bash
+
+APP=/usr/share/smartgit/bin/smartgit.sh
+
+if [ "$1" ]; then
+   $APP --open "$1" &
+else
+   $APP --open "`pwd`" &
+fi
+

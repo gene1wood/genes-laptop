@@ -1,0 +1,35 @@
+#!/bin/bash -x
+#
+# This script moves back windows that have been moved off screen
+#
+# Author: Tine Mezgec tine.mezgec@gmail.com
+#
+
+width=`xrandr | grep current | awk {'print $8'}`
+
+# wmctrl -l -G
+# List windows managed by the window manager including geometry information
+# <window ID> <desktop ID> <x> <y> <width> <height> <client machine> <window title>
+# $8 : Window title
+# $3 : X
+`wmctrl -l -G | awk -v w=$width '{
+    if ($8 != "unity-dash" && $8 != "Hud") {
+        if ($3 >= w || $3 < 0) {
+            if (w > 3900) {
+                system("wmctrl -i -r " $1 " -e 0,3000,100,-1,-1");
+            } else {
+                system("wmctrl -i -r " $1 " -e 0," sqrt($3*$3) % w ",-1,-1,-1");
+            }
+        }
+    }
+}'`
+
+# system("wmctrl -i -r " $1 " -e 0," sqrt($3*$3) % w ",-1,-1,-1")
+# -i -r " $1 " -e : resize and move the window
+# G          X          Y  W  H 
+# 0," sqrt($3*$3) % w ",-1,-1,-1
+#  G : 0               : use the default gravity of the window
+#  X : sqrt($3*$3) % w : take the absolute value of X modulo the width of the screen
+#  Y : -1              : unchanged
+#  W : -1              : unchanged
+#  H : -1              : unchanged

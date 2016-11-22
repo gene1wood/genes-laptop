@@ -1,0 +1,15 @@
+#!/bin/bash
+
+device="SynPS/2 Synaptics TouchPad"
+
+is_enabled="`xinput --list-props "$device" | awk '/^\W*Device Enabled/ {print $4}'`"
+if [ "$is_enabled" == "1" ]; then
+    echo "Disabling $device"
+    xinput --disable "$device"
+elif [ "$is_enabled" == "0" ]; then
+    echo "Enabled $device"
+    xinput --enable "$device"
+else
+    echo "Unable to find $device"
+    exit 1
+fi

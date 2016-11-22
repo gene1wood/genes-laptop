@@ -1,0 +1,6 @@
+.project
+.pydevproject
+org.cloudsmith.geppetto.pp.dsl.PP.prefs
+org.eclipse.core.resources.prefs
+*.py[cod]
+.idea

@@ -1,0 +1,10 @@
+{
+	"host": "https://irccloud.mozilla.com",
+	"width": 1029,
+	"height": 775,
+	"zoom": 0,
+	"spellcheck": true,
+	"neverPromptIrcUrls": false,
+	"x": 280,
+	"y": 172
+}

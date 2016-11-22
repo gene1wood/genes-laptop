@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config id="service" version="3">
+	<orgType><%= @install_type %></orgType>
+	<helpNovice>STILL_RUNNING</helpNovice>
+	<servicePeerConfig>
+		<!-- START CUSTOMIZATION 
+      Uncomment the "authority" value below and set the attributes.
+        On login CrashPlan will NOT prompt for an Authority if the 'address' is present and 'hideAddress'. 
+
+        Attributes: 
+          address: This is the resolvable hostname and port to your CrashPlan PROe Server (e.g. backup.acme.com:443) 
+          hideAddress: (true or false) Do not prompt or allow user to change the address (default is false) 
+          registrationKey: The organization registration key 
+          username: The users username/email (configurable using params below) 
+          password: The users password (configurable using params below) 
+
+        Configuration Parameters (available to username and password): 
+          ${username}: user.name 
+          ${computername}: system computer name or host name 
+          ${generated}: random 8 character generated, used for password 
+          ${uniqueId}: globally unique number 
+          ${deferred}: only allowed in the password parameter (for LDAP authentication) 
+    -->
+    <!-- <authority address="hostname:port"/> -->
+    <!-- END CUSTOMIZATION -->
+		<listenForBackup>false</listenForBackup>
+	</servicePeerConfig>
+	<serviceBackupConfig>
+		<highBandwidthRate>0.0</highBandwidthRate>
+		<lowBandwidthRate>0.0</lowBandwidthRate>
+		<wanTcpTrafficClass>2</wanTcpTrafficClass>
+		<notifyDeliveryTime>ANY</notifyDeliveryTime>
+		<!-- Uncomment to disable the private data password feature. <disableDataPassword>true</disableDataPassword> -->
+		<hiddenFiles/>
+		<backupConfig>
+			<manifestPath><%= @manifest_path %></manifestPath>
+			<excludeSystem/>
+			<noCompressionPatterns/>
+			<manualFileWatchPatterns/>
+			<backupSets>
+				<backupSet id="1">
+					<backupPaths>
+					</backupPaths>
+				</backupSet>
+			</backupSets>
+		</backupConfig>
+	</serviceBackupConfig>
+</config>

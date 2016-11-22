@@ -1,0 +1,4 @@
+[AFP]
+title=Apple Filing Protocol
+description=Apple Filing Protocol enables file services for Mac OS X and Mac OS.
+ports=548/tcp
