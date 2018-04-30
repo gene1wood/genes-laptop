@@ -11,6 +11,9 @@ base_homedir = node['etc']['passwd'][node['base_user']['username']]['dir']
 
 package 'inkscape'
 
+directory "#{base_homedir}/.config/inkscape"
+directory "#{base_homedir}/.config/inkscape/keys"
+
 cookbook_file "#{base_homedir}/.config/inkscape/keys/default.xml" do
   source 'inkscape/default.xml'
   owner node['base_user']['username']
