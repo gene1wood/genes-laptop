@@ -14,7 +14,7 @@ package 'avahi-daemon'
 package 'libnss-mdns'
 
 service 'netatalk' do
-    action :enable
+    action :disable
 end
 
 service 'avahi-daemon' do
@@ -30,7 +30,7 @@ end
 cookbook_file '/etc/netatalk/afpd.conf' do
     source 'publicaccess/netatalk/afpd.conf'
     mode '0644'
-    notifies :reload, 'service[netatalk]', :delayed
+    notifies :restart, 'service[netatalk]', :delayed
 end
 
 template '/etc/default/netatalk' do
@@ -39,13 +39,13 @@ template '/etc/default/netatalk' do
     variables({
       :username => node['base_user']['username']
     })
-    notifies :reload, 'service[netatalk]', :delayed
+    notifies :restart, 'service[netatalk]', :delayed
 end
 
 cookbook_file '/etc/netatalk/AppleVolumes.default' do
     source 'publicaccess/netatalk/AppleVolumes.default'
     mode '0644'
-    notifies :reload, 'service[netatalk]', :delayed
+    notifies :restart, 'service[netatalk]', :delayed
 end
 
 cookbook_file '/etc/nsswitch.conf' do
@@ -71,7 +71,11 @@ end
 
 # TODO test if this works from a mac
 
-service 'samba' do
+
+# samba_service_name = 'samba' # Ubuntu 14.04
+samba_service_name = 'smbd'  # Ubuntu 16.04
+
+service samba_service_name do
     action :enable
 end
 
@@ -83,7 +87,7 @@ end
 cookbook_file '/etc/samba/smb.conf' do
     source 'publicaccess/smb.conf'
     mode '0644'
-    notifies :reload, 'service[samba]', :delayed
+    notifies :reload, "service[#{samba_service_name}]", :delayed
 end
 
 # Based off /etc/ufw/applications.d/samba
@@ -103,8 +107,8 @@ end
 
 package 'nfs-kernel-server'
 
-service 'nfs-kernel-server' do
-    action :enable
+service 'nfs-server' do
+    action :disable
 end
 
 directory '/srv/public/nfs' do
@@ -123,13 +127,13 @@ end
 cookbook_file '/etc/default/nfs-common' do
     source 'publicaccess/nfs/nfs-common'
     mode '0644'
-    notifies :restart, 'service[nfs-kernel-server]', :delayed
+    notifies :restart, 'service[nfs-server]', :delayed
 end
 
 cookbook_file '/etc/default/nfs-kernel-server' do
     source 'publicaccess/nfs/nfs-kernel-server'
     mode '0644'
-    notifies :restart, 'service[nfs-kernel-server]', :delayed
+    notifies :restart, 'service[nfs-server]', :delayed
 end
 
 template '/etc/exports' do
@@ -138,7 +142,7 @@ template '/etc/exports' do
     variables({
       :cidrs => node['nfs']['public']['cidrs']
     })
-    notifies :restart, 'service[nfs-kernel-server]', :delayed
+    notifies :restart, 'service[nfs-server]', :delayed
 end
 
 cookbook_file '/etc/ufw/applications.d/nfs' do
