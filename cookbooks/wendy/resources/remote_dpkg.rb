@@ -3,7 +3,7 @@ resource_name :remote_dpkg
 property :package_name, String, required: true, name_property: true
 property :source, String, required: true # This doesn't really need to be a string
 property :checksum, [ /^[a-zA-Z0-9]{64}$/, nil ]
-property :filename, String, default: nil
+property :filename, [ String, nil ], default: nil
 
 default_action :upgrade
 
