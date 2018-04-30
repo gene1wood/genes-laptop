@@ -27,8 +27,8 @@ for package_name in [
 end
 
 remote_dpkg 'teamviewer' do
-  source "http://downloadus2.teamviewer.com/download/teamviewer_i386.deb"
-  checksum "66f2444b660b87f2fdc1d19949b94bbd840982d51c3405e4a53799cd6a6c6090"
+  source "https://download.teamviewer.com/download/teamviewer_i386.deb"
+  checksum '7a729557ef7618c41c8a94a6d668fa84422ecf9acf2b1889ea52c727849f7f07'
 end
 
 service 'teamviewerd' do
