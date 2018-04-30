@@ -257,3 +257,6 @@ cert-digest-algo SHA512
 # Set the list of default preferences to string.
 # used for new keys and default for "setpref"
 default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
+
+# Change the default keyid-format to 0xLONG due to https://evil32.com/
+keyid-format 0xLONG
