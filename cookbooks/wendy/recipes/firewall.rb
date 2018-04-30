@@ -16,7 +16,7 @@ service 'rsyslog'
 
 cookbook_file '/etc/rsyslog.d/20-ufw.conf' do
     source 'rsyslog.d/20-ufw.conf'
-    notifies :reload, 'service[rsyslog]', :delayed
+    notifies :restart, 'service[rsyslog]', :delayed
 end
 
 firewall_rule 'kdeconnect tcp' do
