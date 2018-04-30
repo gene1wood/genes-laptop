@@ -10,3 +10,5 @@ cookbook 'apt'
 cookbook 'firewall'
 cookbook 'desktop', '>= 0.1.1', path: '/home/gene/code/github.com/gene1wood/cookbook-desktop'
 cookbook 'apache2'
+cookbook 'poise-python', '~> 1.6.0'
+

@@ -345,3 +345,18 @@ end
 
 package 'libav-tools'
 
+############################################################ Python #################################################################
+
+python_runtime '2' do
+  provider :system
+  version '2.7'
+end
+
+python_package 'virtualenvwrapper'
+directory "#{base_homedir}/.virtualenvs"
+file "#{base_homedir}/.virtualenvs/postmkvirtualenv" do
+  content "pip install boto3\n"
+end
+
+python_package 'awslogs'
+python_package 'bugwarrior'

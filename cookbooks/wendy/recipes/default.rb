@@ -207,6 +207,10 @@ pip install IPy
 pip install google-api-python-client
 pip install wheel
 pip install youtube_dl
+pip install pytest
+pip install pylabels
+pip install coverage
+pip install zappa
 
 # private-chrome
 In private-chrome non-icognito window install adblock

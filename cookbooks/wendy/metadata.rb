@@ -11,3 +11,5 @@ depends          'apt'
 depends          'firewall'
 depends          'desktop'
 depends          'apache2'
+depends          'poise-python', '~> 1.6.0'
+

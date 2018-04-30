@@ -46,3 +46,10 @@ if [[ TERM=="xterm" && COLORTERM==gnome* ]]; then
     export TERM="xterm-256color"
     color_prompt=yes
 fi
+
+GREP_COLORS="ms=01;31:mc=01;31:sl=:cx=:fn=01;35:ln=01;32:bn=01;32:se=01;36"
+
+# http://virtualenvwrapper.readthedocs.io/en/latest/install.html
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Devel
+source /usr/local/bin/virtualenvwrapper_lazy.sh
