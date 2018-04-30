@@ -6,4 +6,4 @@ else
     dest="$1"
 fi
 
-find /srv/public/ \( -path /srv/public/afs/.AppleDouble -o -path /srv/public/afs/.AppleDB -o -path /srv/public/afs/.AppleDesktop -o -path /srv/public/afs/Temporary\ Items -o -path /srv/public/afs/Network\ Trash\ Folder -o -path /srv/public/afs/.DS_Store \) -prune -o -type f -a -exec bash -c "install --group gene --owner gene --mode 644 --preserve-timestamps \"{}\" \"$dest\" && rm --verbose {}" \;
+find /srv/public/ \( -path /srv/public/afs/.AppleDouble -o -path /srv/public/afs/.AppleDB -o -path /srv/public/afs/.AppleDesktop -o -path /srv/public/afs/Temporary\ Items -o -path /srv/public/afs/Network\ Trash\ Folder -o -path /srv/public/afs/.DS_Store \) -prune -o -type f -a -exec bash -c "install --group gene --owner gene --mode 644 --preserve-timestamps \"{}\" \"$dest\" && rm --verbose \"{}\"" \;
