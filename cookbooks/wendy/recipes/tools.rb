@@ -34,7 +34,8 @@ for filename in ['smartgit',
                  'mozilla-socks-proxy',
                  'dorothy-socks-proxy',
                  'screencast',
-                 'pack_animation.py'] do
+                 'pack_animation.py',
+                 'ngrok'] do
     cookbook_file "#{base_homedir}/bin/#{filename}" do
       source "bin/#{filename}"
       owner node['base_user']['username']
