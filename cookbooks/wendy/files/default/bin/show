@@ -7,6 +7,8 @@ if [ -e "$1" ]; then
     action=req
   elif grep -- '-BEGIN CERTIFICATE-' "$1" >/dev/null; then
     action=x509
+  elif grep -- '-BEGIN TRUSTED CERTIFICATE-' "$1" >/dev/null; then
+    action=x509
   else
     action=unknown
   fi
