@@ -5,4 +5,10 @@
     <email><%= @email %></email>
   </user>
   <notifications>True</notifications>
+  <folder>
+    <name><%= @folder_name %></name>
+    <identifier><%= @folder_identifier %></identifier>
+    <url>ssh://<%= @username %>@<%= @hostname %><%= @path %></url>
+    <backend>Git</backend>
+  </folder>
 </sparkleshare>

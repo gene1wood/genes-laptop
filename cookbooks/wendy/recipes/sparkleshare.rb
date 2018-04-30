@@ -32,6 +32,11 @@ template sparkelshare_config_filename do
   variables({
       :fullname => node['base_user']['fullname'],
       :email => node['base_user']['email'],
+      :username => node['sparkleshare']['username'],
+      :hostname => node['sparkleshare']['hostname'],
+      :folder_name => node['sparkleshare']['folder_name'],
+      :folder_identifier => node['sparkleshare']['folder_identifier'],
+      :path => node['sparkleshare']['path']
   })
   not_if { File.exists?(sparkelshare_config_filename) }
 end
@@ -85,4 +90,6 @@ execute "configure gnome-encfs-manager" do
   not_if "gksudo -u #{node['base_user']['username']} gnome-encfs-manager is_configured #{node['sparkleshare']['encfs_source']}"
   # TODO : Add Secrets mount
 end
+
+# MANUAL : customize local repo .git/config with "gpgsign = false" in the "[commit]" section
 
