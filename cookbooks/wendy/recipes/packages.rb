@@ -7,102 +7,120 @@
 # All rights reserved - Do Not Redistribute
 #
 
+base_homedir = node['etc']['passwd'][node['base_user']['username']]['dir']
+
 package 'base OS packages' do
-  package_name [
-    'openssh-server',
-    'sshfs',
-    'curl',
-    'apt-file',
-    'encfs',
-    'vlc',
-    'meld',
-    'pdftk',
-    'samba',
-    'screen',
-    'shutter',
-    'transmission-remote-gtk',
-    'gconf-editor',
-    'openvpn',
-    'network-manager-openvpn',
-    'ruby',
-    'gksu',
-    'dconf-editor',
-    'gimp',
-    'unp',
-    'dos2unix',
-    'dosbox',
-    'flac',
-    'imagemagick',
-    'inkscape',
-    'knockd',
-    'krename',
-    'lame',
-    'mnemonicode',
-    'nmap',
-    'recordmydesktop',
-    'unetbootin',
-    'wireshark',
-    'xtightvncviewer',
-    'audacious',
-    'bsdgames',
-    'audacity',
-    'at',
-    'httpie',
-    'ipython',
-    'python-bs4',
-    'python-html2text',
-    'whois',
-    'python-yaml',
-    'gtk-recordmydesktop',
-    'openshot',
-    'iperf',
-    'powertop',
-    'lsyncd',
-    'subversion',
-    'traceroute',
-    'sysv-rc-conf',
-    'icedtea-7-plugin',
-    'xsel',
-    'android-tools-adb',
-    'android-tools-fastboot',
-    'heimdall-flash',
-    'bzr',
-    'golang',
-    'yubikey-personalization-gui',
-    'secure-delete',
-    'qrencode',
-    'maildir-utils',
-    'vbrfix',
-    'mp3diags',
-    'wine',
-    'openjdk-7-jdk',
-    'gameconqueror',
-    'htop',
-    'avidemux',
-    'libav-tools',
-    'minicom',
-    'xinetd',
-    'tftpd',
-    'tftp',
-    'snmp',
-    'mencoder',
-    'maven2',
-    'exfat-fuse',
-    'exfat-utils',
-    'mailutils',
-    'termsaver',
-    'unrar',
-    'php5-cli',
-    'sqlite3',
-    'phatch',
-    'puddletag',
-    'mame',
-    'mame-tools',
-    'pandoc',
-    'unity-tweak-tool',
-    'httping',
-    'alsa-tools-gui',
-    'idn']
+  package_name %w[
+    openssh-server
+    sshfs
+    curl
+    apt-file
+    encfs
+    vlc
+    meld
+    pdftk
+    samba
+    screen
+    shutter
+    transmission-remote-gtk
+    gconf-editor
+    openvpn
+    network-manager-openvpn
+    ruby
+    ruby-dev
+    gksu
+    dconf-editor
+    gimp
+    unp
+    dos2unix
+    dosbox
+    flac
+    imagemagick
+    inkscape
+    knockd
+    krename
+    lame
+    mnemonicode
+    nmap
+    unetbootin
+    wireshark
+    xtightvncviewer
+    audacious
+    bsdgames
+    audacity
+    at
+    httpie
+    ipython
+    python-bs4
+    python-html2text
+    whois
+    python-yaml
+    openshot
+    iperf
+    powertop
+    lsyncd
+    subversion
+    traceroute
+    sysv-rc-conf
+    xsel
+    android-tools-adb
+    android-tools-fastboot
+    heimdall-flash
+    bzr
+    golang
+    yubikey-personalization-gui
+    secure-delete
+    qrencode
+    maildir-utils
+    vbrfix
+    mp3diags
+    wine
+    gameconqueror
+    htop
+    minicom
+    xinetd
+    tftpd
+    tftp
+    snmp
+    mencoder
+    exfat-fuse
+    exfat-utils
+    mailutils
+    termsaver
+    unrar
+    sqlite3
+    phatch
+    puddletag
+    mame
+    mame-tools
+    pandoc
+    texlive
+    httping
+    alsa-tools-gui
+    idn
+    yubikey-personalization
+    compizconfig-settings-manager
+    python-matplotlib
+    moreutils
+    playonlinux
+    ddclient
+    mkvtoolnix
+    tvnamer
+    tree
+    smartmontools
+    qreator
+    redshift
+    redshift-gtk
+    gtkpod
+    pwgen
+    dstat
+    iotop
+    gparted
+    pitivi
+    oathtool
+    network-manager-openvpn-gnome
+    task
+  ]
 end
 # https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1296270
 for package_name in ['myspell-en-au',
@@ -116,26 +134,29 @@ for package_name in ['myspell-en-au',
   end
 end
 
-############ Remote Dpkg Files ##################
+#################################################### Remote Dpkg Files ##########################################################
 
+# https://keybase.io/docs/the_app/linux_expired_key
 remote_dpkg 'keybase' do
   source "https://prerelease.keybase.io/keybase_amd64.deb"
-  checksum "2e05591119606f26337ca14d13547c815f4443f26384157ec6685764b8c2ae93"
+  checksum "722c9a801f235d6aca21ecd18b1f077356aed1e57334b58d3c3095bcec82ce2e"
   action :install # keybase auto updates itself so we should skip this if it's installed
   # source "https://dist.keybase.io/linux/deb/keybase-latest-amd64.deb"
   # checksum "0fa9860a0ce77b0507b440115a55c710e53d71eb4d181014f4b7150c341736db"
 end
 
 remote_dpkg 'spideroakone' do
-  source "https://spideroak.com/getbuild?platform=ubuntu&arch=x86_64"
+  source "https://spideroak.com/release/spideroak/deb_x64"
   filename "spideroakone.deb"
-  checksum "3366d38fd055668cc8a86adc914ace8675ba7babfc479f094041707b21c11961"
+  checksum "a94d4ad3657d7437ee4ef5b7a5feb2687b78dafab45f94c6cb2fb5f246c9dcfe"
   action :install # spideroakone auto updates itself so we should skip this if it's installed
 end
 
+package 'python-apt'
+
 remote_dpkg 'steam' do
   source "https://steamcdn-a.akamaihd.net/client/installer/steam.deb"
-  checksum "6a0837afaef3e5ab6eae1a027384b8b94edcb92f5edb23a05b70dbf7eed4bb6d"
+  checksum "45aa0aaec0183f667ae985667ef2ca4bab9391fbe0fa398ac9f2ca32dfb526d8"
   # No need to upgrade this package because steam has it's own internal self
   # updating mechanism
   not_if "dpkg-query -W 'steam'"
@@ -147,31 +168,7 @@ remote_dpkg 'encryptr' do
   action :install # encryptr auto updates itself so we should skip this if it's installed
 end
 
-remote_dpkg 'mig-loader' do
-  source "https://s3.amazonaws.com/infosec-mig/public/it-ws/mig-loader_20160817-0.e43ead4.prod_amd64.deb"
-  checksum "d1f82cced747275536a5ccd7e73b41655e71c493d40d2d9e56bf412a57231dcc"
-  action :install # mig-loader auto updates itself so we should skip this if it's installed
-end
-
-remote_dpkg 'nomachine' do
-  source "http://download.nomachine.com/download/5.1/Linux/nomachine_5.1.26_1_amd64.deb"
-  checksum "924a2a1f67bc9e1d7c1d5bae2764bd790632a0af5c811cd8e56f1637de7be8f7"
-  action :install # nomachine auto updates itself so we should skip this if it's installed
-end
-
-file '/etc/init/nxserver.override' do
-  content "# https://www.nomachine.com/TR01N06343\nmanual\n"
-end
-
-remote_dpkg 'google-earth-stable' do
-  source "https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb"
-  # checksum "924a2a"
-  action :install # this auto updates itself so we should skip this if it's installed
-end
-
-package ['python3-markdown',
-         'python3-bs4',
-         'wkhtmltopdf']
+package %w(python3-markdown python3-bs4 wkhtmltopdf gir1.2-webkit-3.0 gir1.2-javascriptcoregtk-3.0)
 
 remote_dpkg 'remarkable' do
   source "https://remarkableapp.github.io/files/remarkable_1.62_all.deb"
@@ -179,59 +176,90 @@ remote_dpkg 'remarkable' do
 end
 
 remote_dpkg 'Semaphor' do
-  source "https://spideroak.com/releases/semaphor/debian"
-  filename "Semaphor-amd64.deb"
-  checksum "cb567dfe237996a625059f28dbb751be50e2d6799fd29e995b8843ac5acaab9f"
+  source "https://spideroak.com/release/semaphor/deb_x64"
+  filename "semaphor_amd64.deb"
+  checksum "dc86e96e4d6148f9e320d396ff25cb9291d582edd768bc8bdc706c454ffafa26"
   action :install # semaphor auto updates itself so we should skip this if it's installed
 end
 
-########## Local Dpkg ############
+package 'libapache2-mod-auth-openidc'
 
+package ['python-appindicator',
+         'python-appdirs',
+         'python-netifaces',
+         'python-ipaddr',
+         'python-psutil']
+remote_dpkg 'mullvad' do
+  # source "https://www.mullvad.net/download/latest/linux/"
+  # Mullvad 63 introduced depenency on [python-wxgtk3.0](https://packages.ubuntu.com/search?keywords=python-wxgtk3.0) not present in Ubuntu 14.04
+  # MANUAL : mullvad depending on Ubuntu distro
+  source "https://www.mullvad.net/media/client/mullvad_62-1_all.deb"
+  filename "mullvad_all.deb"
+  checksum "7df59d9a8071dd6da6a531e162806328b04165694661221d99a8b7f4f988a6b8"
+end
+
+remote_dpkg 'rescuetime' do
+  source "https://www.rescuetime.com/installers/rescuetime_current_amd64.deb"
+  checksum "90b30405b98e8da7aa670acdcffa52e79ae212c1f833556646ab31455cd05708"
+end
+
+
+remote_dpkg 'geogebra5' do
+  source "http://www.geogebra.net/linux/pool/main/g/geogebra5/geogebra5_5.0.390.0-569040_amd64.deb"
+  checksum "207609735f1eb1fc6174fd5302102022fbbf8f7dfaba4cadfde2dda315524d55"
+  action :install # auto updates itself so we should skip this if it's installed
+end
+
+package ['libqt5clucene5',
+         'libqt5designer5',
+         'libqt5help5',
+         'python3-pyqt5',
+         'python3-pyudev',
+         'python3-sip']
+remote_dpkg 'python3-multibootusb' do
+  source "https://github.com/mbusb/multibootusb/releases/download/v8.8.0/python3-multibootusb_8.8.0-1_all.deb"
+  checksum "8dd041f99b95a7b5a4140b27c85cbf3af75a14ae4bdf61202a3ca3d65dadba60"
+  #action :install # auto updates itself so we should skip this if it's installed
+end
+
+################################################## Local Dpkg ####################################################
+
+
+# https://askubuntu.com/questions/762462/how-to-install-vidyodesktop-on-ubuntu-16-04-lts
+# https://support.vidyocloud.com/hc/en-us/articles/226103528-VidyoDesktop-3-6-3-for-Linux-and-Ubuntu-15-04-and-higher
+#package 'libqt4-gui'
+# dpkg -i --ignore-depends=libqt4-gui /root/.chef/local-mode-cache/cache/VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb
 vidyo_filename = "VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb"
 vidyo_version = "3.6.3-017"
 cookbook_file "#{Chef::Config['file_cache_path']}/#{vidyo_filename}" do
   source vidyo_filename
 end
 
-dpkg_package 'vidyodesktop' do
-  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
-  version vidyo_version
-end
+# This libqt4-gui requirement is screwing things up
+#dpkg_package 'vidyodesktop' do
+#  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
+#  version vidyo_version
+#end
 
-gitcrypt_filename = 'git-crypt_0.5.0-1_amd64.deb'
-gitcrypt_version = '0.5.0-1'
-cookbook_file "#{Chef::Config['file_cache_path']}/#{gitcrypt_filename}" do
-  source gitcrypt_filename
-end
 
-dpkg_package 'git-crypt' do
-  source "#{Chef::Config['file_cache_path']}/#{gitcrypt_filename}"
-  version gitcrypt_version
-end
-
-########## Apt Repos #############
+################################################## Apt Repos #####################################################
 
 apt_repository 'virtualbox' do
   uri 'http://download.virtualbox.org/virtualbox/debian'
   distribution node['lsb']['codename']
   components ['contrib']
-  keyserver 'keyserver.ubuntu.com'
-  key '98AB5139'
+  # keyserver 'keyserver.ubuntu.com'
+  # key '98AB5139'
+  key 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
 end
 
-package 'virtualbox-5.1'
+package 'virtualbox-5.2'
 
-# TODO : sudo usermod -a -G vboxusers node['base_user']['username']
+# MANUAL : sudo usermod -a -G vboxusers node['base_user']['username']
 
+# MANUAL : VirtualBox extension pack
 # wget http://download.virtualbox.org/virtualbox/5.0.26/Oracle_VM_VirtualBox_Extension_Pack-5.0.26-108824.vbox-extpack
 # sudo VBoxManage extpack install ./Oracle_VM_VirtualBox_Extension_Pack-4.2.12-84980.vbox-extpack
-
-apt_repository 'rabbitvcs' do
-  uri 'ppa:rabbitvcs/ppa'
-  distribution node['lsb']['codename']
-end
-
-package 'rabbitvcs-nautilus3'
 
 apt_repository 'yubico' do
   uri 'ppa:yubico/stable'
@@ -242,11 +270,12 @@ package 'yubikey-neo-manager'
 package 'yubioath-desktop'
 
 apt_repository 'getdeb' do
-  uri        'http://archive.getdeb.net/ubuntu'
+  uri 'http://archive.getdeb.net/ubuntu'
   distribution 'trusty-getdeb'
   components ['games']
   key '46D7E7CF'
   keyserver 'keyserver.ubuntu.com'
+  # MANUAL : vulture-nethack
   # This required manually running 'sudo apt-get update' to prevent the error
   # WARNING: The following packages cannot be authenticated!
   #    vulture-data vulture-nethack
@@ -255,8 +284,13 @@ end
 
 package 'vulture-nethack'
 
-apt_repository 'vikoadi' do
-  uri 'ppa:vikoadi/ppa'
+# apt_repository 'vikoadi' do
+#   uri 'ppa:vikoadi/ppa'
+#   distribution node['lsb']['codename']
+# end
+# https://github.com/vikoadi/indicator-kdeconnect/issues/43#issuecomment-336427646
+apt_repository 'webupd8team-indicator-kdeconnect' do
+  uri 'ppa:webupd8team/indicator-kdeconnect'
   distribution node['lsb']['codename']
 end
 
@@ -288,7 +322,7 @@ apt_repository 'btsync' do
   uri 'http://linux-packages.getsync.com/btsync/deb'
   distribution 'btsync'
   components ['non-free']
-  key 'http://linux-packages.getsync.com/btsync/key.asc'
+  key 'https://linux-packages.resilio.com/resilio-sync/key.asc'
 end
 
 package "btsync"
@@ -337,13 +371,128 @@ end
 
 package 'fonts-emojione-svginot'
 
-# http://askubuntu.com/a/783983/14601
-apt_repository 'heyarje-libav-11' do
-  uri 'ppa:heyarje/libav-11'
+apt_repository 'ansible-ansible' do
+  uri 'ppa:ansible/ansible'
   distribution node['lsb']['codename']
 end
 
-package 'libav-tools'
+package 'ansible'
+
+apt_repository 'mixxx-mixxx' do
+  uri 'ppa:mixxx/mixxx'
+  distribution node['lsb']['codename']
+end
+
+package 'mixxx'
+
+apt_repository 'cpick-hub' do
+  # https://github.com/github/hub/issues/718
+  uri 'ppa:cpick/hub'
+  distribution node['lsb']['codename']
+end
+
+package 'hub'
+
+# MANUAL : tails-installer depending on Unbuntu distro
+# There's no package for 14.04 unfortunately
+apt_repository 'tails-team-tails-installer' do
+  uri 'ppa:tails-team/tails-installer'
+  distribution node['lsb']['codename']
+end
+
+package 'tails-installer'
+
+apt_repository 'nilarimogard-webupd8' do
+  uri 'ppa:nilarimogard/webupd8'
+  distribution node['lsb']['codename']
+end
+
+package 'pulseaudio-equalizer'
+
+# https://askubuntu.com/a/765407
+apt_repository 'acestream' do
+  uri 'http://repo.acestream.org/ubuntu/'
+  # distribution node['lsb']['codename']
+  distribution 'trusty'
+  components ['main']
+  keyserver 'keyserver.ubuntu.com'
+  key 'E1254F21D636B7EFDE41D2AF50E2BCF0E3805CD8'
+end
+
+package %w(acestream-engine)
+
+# https://nodejs.org/en/download/package-manager/
+# node (nodejs) and npm in the Ubuntu repos are super old
+apt_repository 'nodesource' do
+  uri 'https://deb.nodesource.com/node_8.x'
+  distribution node['lsb']['codename']
+  components ['main']
+  keyserver 'keyserver.ubuntu.com'
+  key '9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280'
+end
+
+package 'nodejs'
+
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+
+apt_repository 'docker' do
+  uri 'https://download.docker.com/linux/ubuntu'
+  distribution node['lsb']['codename']
+  components ['stable']
+  arch 'amd64'
+  key 'https://download.docker.com/linux/ubuntu/gpg'
+end
+
+package 'docker-ce'
+# TODO : Add user to the docker group, logout and log back in
+
+# https://signal.org/download/
+apt_repository 'signal' do
+  uri 'https://updates.signal.org/desktop/apt'
+  distribution node['lsb']['codename']
+  components ['main']
+  arch 'amd64'
+  key 'https://updates.signal.org/desktop/apt/keys.asc'
+end
+
+package 'signal-desktop'
+
+############################################################ Remote Binary ##########################################################
+
+packer_package_filename = "#{Chef::Config['file_cache_path']}/packer_0.12.3_linux_amd64.zip"
+remote_file packer_package_filename do
+  source 'https://releases.hashicorp.com/packer/0.12.3/packer_0.12.3_linux_amd64.zip'
+  checksum 'd11c7ff78f546abaced4fcc7828f59ba1346e88276326d234b7afed32c9578fe'
+  notifies :run, 'execute[unzip packer]', :immediately
+end
+
+execute "unzip packer" do
+  command "unzip #{packer_package_filename} -d /usr/local/bin"
+  action :nothing
+end
+
+remote_file '/usr/local/bin/docker-compose' do
+  source 'https://github.com/docker/compose/releases/download/1.16.1/docker-compose-Linux-x86_64'
+  checksum "1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a"
+  mode "0755"
+end
+
+remote_file "/etc/bash_completion.d/docker-compose" do
+  source "https://raw.githubusercontent.com/docker/compose/1.16.1/contrib/completion/bash/docker-compose"
+  checksum "40d07c7b82d2cb4253c71a8107bcddbe6b7802efb6a8711aa4ec68fa5bdeb8d1"
+  mode "0644"
+end
+
+############################################################ Manual Apt Repo ########################################################
+
+
+# MANUAL : When we upgrade to 16.04 install republicanywhere
+# http://www.omgubuntu.co.uk/2017/07/republic-wireless-anywhere-linux
+
+
+# systemctl mask unattended-upgrades
+# https://unix.stackexchange.com/a/369582/22701
+
 
 ############################################################ Python #################################################################
 
@@ -360,3 +509,17 @@ end
 
 python_package 'awslogs'
 python_package 'bugwarrior'
+
+############################################################ Ruby ###################################################################
+
+gem_package 'chef'
+
+# git : see git.rb
+
+# MANUAL
+# jetbrains intellij idea
+# pycharm
+# webstorm
+# rubymine
+# phpstorm with snap
+# https://www.jetbrains.com/phpstorm/download/#section=linux

@@ -32,18 +32,18 @@ include_recipe 'wendy::apache'
 include_recipe 'wendy::crashplan'
 include_recipe 'wendy::tools'
 include_recipe 'wendy::firewall'
-include_recipe 'wendy::eclipse'
+# include_recipe 'wendy::eclipse' # I don't use eclipse anymore
 include_recipe 'wendy::fonts'
 include_recipe 'wendy::teamviewer'
 include_recipe 'wendy::inkscape'
 include_recipe 'wendy::btsync'
 
-remote_file "/usr/lib/firefox-addons/distribution/extensions/support@lastpass.com.xpi" do
-  # This will only install lastpass on new Firefox profiles, not existing profiles
-  source "https://lastpass.com/download/cdn/lp4.xpi"
-  checksum 'e28cb6d57aa26ecc6be25e58ecc1f12bf7da8b0dcd4680541f68984c7b613219' # 4.0
-  # checksum 'e4b5d91ea880f88d8f5fa3f4d35e377b5144f665c5d037ecb9807d30100f1bfb' # 3.2.16
-end
+# remote_file "/usr/lib/firefox-addons/distribution/extensions/support@lastpass.com.xpi" do
+#   # This will only install lastpass on new Firefox profiles, not existing profiles
+#   source "https://lastpass.com/download/cdn/lp4.xpi"
+#   checksum 'e28cb6d57aa26ecc6be25e58ecc1f12bf7da8b0dcd4680541f68984c7b613219' # 4.0
+#   # checksum 'e4b5d91ea880f88d8f5fa3f4d35e377b5144f665c5d037ecb9807d30100f1bfb' # 3.2.16
+# end
 
 remote_file "/usr/lib/firefox-addons/distribution/extensions/uBlock0@raymondhill.net.xpi" do
   # This will only install ublock origin on new Firefox profiles, not existing profiles
@@ -99,9 +99,14 @@ cookbook_file "#{base_homedir}/.migrc" do
   group node['base_user']['username']
 end
 
-cookbook_file "/etc/cron.d/mig-loader" do
-  source 'etc/cron.d/mig-loader'
-end
+# MANUAL : mig-loader
+# Disabling this as when it runs it overwrites the config : https://github.com/mozilla/mig/issues/347
+# I've also disabled the mig-agent service which the mig-loader installs with
+# update-rc.d -f mig-agent remove
+#
+# cookbook_file "/etc/cron.d/mig-loader" do
+#   source 'etc/cron.d/mig-loader'
+# end
 
 cookbook_file "#{base_homedir}/.pypirc" do
   source 'pypirc'
