@@ -29,31 +29,16 @@ include_recipe 'wendy::sparkleshare'
 include_recipe 'wendy::publicaccess'
 include_recipe 'wendy::tinc'
 include_recipe 'wendy::apache'
-include_recipe 'wendy::crashplan'
 include_recipe 'wendy::tools'
 include_recipe 'wendy::firewall'
-# include_recipe 'wendy::eclipse' # I don't use eclipse anymore
 include_recipe 'wendy::fonts'
 include_recipe 'wendy::teamviewer'
 include_recipe 'wendy::inkscape'
 include_recipe 'wendy::btsync'
 
-# remote_file "/usr/lib/firefox-addons/distribution/extensions/support@lastpass.com.xpi" do
-#   # This will only install lastpass on new Firefox profiles, not existing profiles
-#   source "https://lastpass.com/download/cdn/lp4.xpi"
-#   checksum 'e28cb6d57aa26ecc6be25e58ecc1f12bf7da8b0dcd4680541f68984c7b613219' # 4.0
-#   # checksum 'e4b5d91ea880f88d8f5fa3f4d35e377b5144f665c5d037ecb9807d30100f1bfb' # 3.2.16
-# end
-
-remote_file "/usr/lib/firefox-addons/distribution/extensions/uBlock0@raymondhill.net.xpi" do
-  # This will only install ublock origin on new Firefox profiles, not existing profiles
-  source "https://github.com/gorhill/uBlock/releases/download/1.0.0.0/uBlock0.firefox.xpi"
-  checksum 'b586dea639524752fdfd81901ce7ff247955df0f8bc094fd00484175c5fb452b' # 1.0.0.0
-end
-
+# MANUAL : desktop recipe
 # include_recipe 'wendy::desktop'
-include_recipe 'wendy::desktoptest'
-
+# include_recipe 'wendy::desktoptest'
 
 template "#{base_homedir}/.gnupg/gpg.conf" do
   source 'gpg.conf.erb'
@@ -123,7 +108,7 @@ cookbook_file "/etc/avahi/avahi-daemon.conf" do
 end
 
 # I'd disabled this for some reason, not sure why
-# if this causes a problem agian, note why here
+# if this causes a problem again, note why here
 cookbook_file "/usr/lib/pm-utils/sleep.d/45disablelidwakeup" do
  source 'usr/lib/pm-utils/sleep.d/45disablelidwakeup'
  mode '0755'

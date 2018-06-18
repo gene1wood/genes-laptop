@@ -7,6 +7,10 @@
 #    libavcodec-extra-56
 #    libav-tools
 
+# include_recipe 'wendy::eclipse' # I don't use eclipse anymore
+# include_recipe 'wendy::crashplan'  # With crashplan person going away, I think I just need corp installed by hand
+
+
 remote_dpkg 'irccloud-desktop' do
   source 'https://github.com/irccloud/irccloud-desktop/releases/download/v0.3.0/irccloud-desktop-0.3.0-amd64.deb'
   checksum 'f97b6c5b9d972d46431b9ea3fbc0ad5f7ab4f1b082b8c803bdad3ad9e779385e'
@@ -125,4 +129,19 @@ end
 # execute "untar torbrowser" do
 #   command "tar -xvJf #{torbrowser_package_filename} --directory /opt/torbrowser --strip-components=1"
 #   action :nothing
+# end
+
+
+# Lets handle these within the Firefox profile instead
+# remote_file "/usr/lib/firefox-addons/distribution/extensions/support@lastpass.com.xpi" do
+#   # This will only install lastpass on new Firefox profiles, not existing profiles
+#   source "https://lastpass.com/download/cdn/lp4.xpi"
+#   checksum 'e28cb6d57aa26ecc6be25e58ecc1f12bf7da8b0dcd4680541f68984c7b613219' # 4.0
+#   # checksum 'e4b5d91ea880f88d8f5fa3f4d35e377b5144f665c5d037ecb9807d30100f1bfb' # 3.2.16
+# end
+
+# remote_file "/usr/lib/firefox-addons/distribution/extensions/uBlock0@raymondhill.net.xpi" do
+#   # This will only install ublock origin on new Firefox profiles, not existing profiles
+#   source "https://github.com/gorhill/uBlock/releases/download/1.0.0.0/uBlock0.firefox.xpi"
+#   checksum 'b586dea639524752fdfd81901ce7ff247955df0f8bc094fd00484175c5fb452b' # 1.0.0.0
 # end
