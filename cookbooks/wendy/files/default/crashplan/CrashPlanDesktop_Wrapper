@@ -1,0 +1,114 @@
+#!/bin/bash
+
+CONF="/usr/local/crashplan-personal/conf/ui.properties"
+UIINFO="/var/lib/crashplan/.ui_info"
+BIN="/usr/local/crashplan-personal/bin/CrashPlanDesktop"
+WRAPPER_CONFIG="${HOME}/.crashplandesktop_wrapper"
+
+if [ -e "${WRAPPER_CONFIG}" ]; then
+  readarray -t tokens < ${WRAPPER_CONFIG}
+else
+  declare -a tokens
+fi
+
+usage () {
+  echo "Usage : $0 user@host.example.com"
+  exit 1
+}
+
+get_port () {
+  target="$1"
+  n="`md5sum <<< \"$target\" | awk '{print $1}'`"
+    # Hash the $target and get just the hash field
+  hex_key="${n:0:3}"
+    # Get the first 3 hex digits (decimal 0-4095)
+  port="`expr 40000 + $((0x$hex_key))`"
+    # Convert the hex_key to decimal and add 40000 to get a range of
+    # 40000-404095
+  # To connect to the local crashplan service use the default crashplan port
+  if [ "$target" == "127.0.0.1" ]; then
+    port=4243
+  fi
+  echo "$port"
+}
+
+get_token () {
+  for item in "${tokens[@]}" ; do
+    itemarray=($item)
+    if [ "${itemarray[0]}" = "$1" ]; then
+      echo "${itemarray[1]}"
+      break
+    fi
+  done
+}
+
+fetch_remote_token () {
+  if [ "$1" == "127.0.0.1" ]; then
+    if [ -e "${UIINFO}.bak" ]; then
+      cat "${UIINFO}.bak" | awk -F , '{print $2}'
+    else
+      cat "${UIINFO}" | awk -F , '{print $2}'
+    fi
+  else
+    echo "`ssh -4 $1 cat ${UIINFO} | awk -F , '{print $2}'`"
+  fi
+}
+
+print_tokens () {
+  ( IFS=$'\n'; echo "${tokens[*]}" )
+}
+
+# Default to connecting to the local crashplan service
+if [ -z "$1" ]; then
+  target=127.0.0.1
+else
+  target="$1"
+fi
+
+port="`get_port $target`"
+token="`get_token $target`"
+
+# See if we know the token for that host and if not fetch it
+if [ -z "$token" ]; then
+  echo "Token for $target unknown"
+  echo "Attempting to fetch token from remote server $target"
+  token="`fetch_remote_token $target`"
+  if [ -n "$token" ]; then
+    echo "${target} ${token}" >> ${WRAPPER_CONFIG}
+  else
+    echo "Unable to find token for $target and failed to fetch it remotely."
+    echo "Fetch the token from the server in the file ${target}:${UIINFO} and add it to the ${WRAPPER_CONFIG}"
+    echo "`print_tokens`"
+    exit 1
+  fi
+fi
+
+# Is the tunnel already setup
+listener="`netstat -tnlp 2>/dev/null | awk '{print $4}' | awk -F: -v port=$port '$2 == port {print $0}'`"
+if [ -z "$listener" -a "$target" != "127.0.0.1" ]; then
+  echo "Establishing SSH tunnel to $target, forwarding port $port for CrashPlan"
+  ssh -4 -Nf -L $port:127.0.0.1:4243 $target
+else
+  echo "SSH tunnel already running on port $port"
+fi
+
+# Update .ui_info
+test -e "${UIINFO}.bak" || sudo cp "$UIINFO" "${UIINFO}.bak" || { echo "Unable to backup $UIINFO"; exit 1; }
+echo "$port,$token,127.0.0.1" | sudo tee "$UIINFO" > /dev/null
+
+# Update the crashplan config to use the new port forwarded port
+echo "Updating token in .ui_info"
+if grep "^serviceHost" "$CONF" >/dev/null; then
+  sudo sed -i -e "s/^serviceHost=.*/servicePort=127.0.0.1/g" "$CONF"
+else
+  echo -e "\nserviceHost=127.0.0.1" | sudo tee --append "$CONF" > /dev/null
+fi
+if grep "^servicePort" "$CONF" >/dev/null; then
+  sudo sed -i -e "s/^servicePort=[0-9]*/servicePort=$port/g" "$CONF"
+else
+  echo -e "\nservicePort=$port" | sudo tee --append "$CONF" > /dev/null
+fi
+echo "Launching CrashPlanDesktop, binding to port $port"
+
+# Launch CrashPlanDesktop using the new config pointing to the tunneled port
+"$BIN"

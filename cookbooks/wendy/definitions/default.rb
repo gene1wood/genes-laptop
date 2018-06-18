@@ -98,6 +98,11 @@ define :crashplan, :name => 'crashplan',
       mode '0755'
     end
 
+    cookbook_file "/usr/local/bin/CrashPlanDesktop_Wrapper" do
+      source 'crashplan/CrashPlanDesktop_Wrapper'
+      mode '0755'
+    end
+
     service "#{params[:name]}" do
       # init_command "/etc/init.d/#{params[:name]}"
       action params[:enabled] ? [:enable, :start] : [:disable, :stop]

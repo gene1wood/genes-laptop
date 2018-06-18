@@ -1,0 +1,11 @@
+_crashplan_desktop()
+{
+    local cur
+    WRAPPER_CONFIG="${HOME}/.crashplandesktop_wrapper"
+    if [ -e "${WRAPPER_CONFIG}" ]; then
+      cur=${COMP_WORDS[COMP_CWORD]}
+      IFS=$'\n' COMPREPLY=( $( compgen -W "`cut -d' ' -f1 \"${WRAPPER_CONFIG}\"`" -- $cur ) )
+      return 0
+    fi
+}
+complete -F _crashplan_desktop CrashPlanDesktop_Wrapper
