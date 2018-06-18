@@ -156,9 +156,9 @@ case $1 in
     ;;
   restart|force-reload)
     echo -n "Restarting $DESC ... "
-    $0 stop
+    "$0" stop
     sleep 5
-    $0 start
+    "$0" start
       ;;
   status)
     PID=`_findpid`
