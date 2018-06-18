@@ -140,3 +140,7 @@ source ~/bin/git-prompt.sh
 GIT_PS1_SHOWCOLORHINTS=true
 GIT="\$(__git_ps1 \" (%s)\")"
 PS1="${TITLE_BAR}${DATE_ERRORCODE} ${CHROOT}${USER_AT_HOST} ${pathcolor}\w${GIT}${nocolor}\$ "
+
+if [ -n "$ASCIINEMA_REC" ]; then
+	PS1="$ "
+fi
