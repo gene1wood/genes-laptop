@@ -14,6 +14,8 @@ user node['base_user']['username'] do
   action :modify
 end
 
+# TODO : Add user to both user groups : vboxusers and wireshark
+
 file '/etc/sudoers.d/custom' do
   content "%sudo  ALL=(ALL:ALL) NOPASSWD: ALL"
   mode '0440'
@@ -132,7 +134,7 @@ end
 
 
 =begin
-# Todo
+# MANUAL
 * install mozilla root ca in Firefox
 * crashplan
 * git clone https://github.com/MoriTanosuke/HiDPI-Steam-Skin.git /home/gene/.local/share/Steam/skins/HiDPI-Steam-Skin
@@ -247,6 +249,10 @@ Patch bin/pycharm.sh
     XMODIFIERS=""
     export XMODIFIERS
     # --------------------------------------------------------------------
+
+Configure Chalice
+https://github.com/awslabs/chalice/pull/216#issuecomment-270355138
+
 
 
 # Group membership
