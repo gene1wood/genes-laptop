@@ -9,26 +9,41 @@
 
 define :crashplan, :name => 'crashplan', 
                    :source => 'https://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_4.3.0_Linux.tgz',
-                   :checksum => 'x',
+                   :checksum => nil,
                    :type => 'CONSUMER',
+                   :config_version => '3',
                    :enabled => true do
     # https://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_4.3.0_Linux.tgz
     # https://download.code42.com/installs/linux/install/CrashPlan/CrashPlan_4.4.1_Linux.tgz
 
+    ENTERPRISE_COOKBOOK_FILENAME = 'crashplan/CrashPlanPROe_4.5.2_Linux.tgz'
+    ENTERPRISE_COOKBOOK_CHECKSUM = 'a24be9bc5adde7d012c562064fb885ef23e23dfb078329cd061a55dff091d975'
+    ENTERPRISE_CONFIG_VERSION = '7'
+
     crashplan_install_dir = "/usr/local/#{params[:name]}"
     crashplan_manifest_dir = "/usr/local/var/#{params[:name]}"
-    service_name = params[:name].tr(' ', '-')
+    checksum = params[:type] == 'ENTERPRISE' ? ENTERPRISE_COOKBOOK_CHECKSUM : params[:checksum]
 
     directory crashplan_install_dir
     directory '/usr/local/var'
     directory crashplan_manifest_dir
-    directory "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{params[:checksum]}"
+    directory "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{checksum}"
 
-    remote_file "#{Chef::Config['file_cache_path']}/#{params[:name]}.tgz" do
-      source params[:source]
-      checksum params[:checksum]
-      notifies :run, "execute[unpack #{params[:name]}]", :immediately
+    if params[:type] == 'ENTERPRISE'
+      config_version = ENTERPRISE_CONFIG_VERSION
+      cookbook_file "#{Chef::Config['file_cache_path']}/#{params[:name]}.tgz" do
+        source ENTERPRISE_COOKBOOK_FILENAME
+        notifies :run, "execute[unpack #{params[:name]}]", :immediately
+      end
+    else
+      config_version = params[:config_version]
+      remote_file "#{Chef::Config['file_cache_path']}/#{params[:name]}.tgz" do
+        source params[:source]
+        checksum checksum
+        notifies :run, "execute[unpack #{params[:name]}]", :immediately
+      end
     end
+
 
     execute "unpack #{params[:name]}" do
       command ['tar',
@@ -36,7 +51,7 @@ define :crashplan, :name => 'crashplan',
               '--no-same-owner',
               '--gunzip',
               "--file \"#{Chef::Config['file_cache_path']}/#{params[:name]}.tgz\"",
-              "--directory \"#{Chef::Config['file_cache_path']}/#{params[:name]}-#{params[:checksum]}\"",
+              "--directory \"#{Chef::Config['file_cache_path']}/#{params[:name]}-#{checksum}\"",
               '--strip-components 1'
               ].join(" ")
       action :nothing
@@ -46,9 +61,9 @@ define :crashplan, :name => 'crashplan',
     bash "install #{params[:name]}" do
       cwd crashplan_install_dir
       code <<-EOH
-        cat "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{params[:checksum]}/"*_*.cpi | gzip -d -c - | cpio -i --no-preserve-owner
+        cat "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{checksum}/"*_*.cpi | gzip -d -c - | cpio -i --no-preserve-owner
         chmod 777 log
-        cp --preserve "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{params[:checksum]}/scripts/"* bin/
+        cp --preserve "#{Chef::Config['file_cache_path']}/#{params[:name]}-#{checksum}/scripts/"* bin/
         EOH
       action :nothing
     end
@@ -58,6 +73,7 @@ define :crashplan, :name => 'crashplan',
       mode '0644'
       variables({
           :manifest_dir => crashplan_manifest_dir,
+          :config_version  => config_version,
           :install_type => params[:type]
       })
     end
