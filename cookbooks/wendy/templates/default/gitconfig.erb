@@ -1,13 +1,25 @@
 [user]
-	name = <%= @fullname %>
-	email = <%= @email %>
-[core]
-[core]
+   name = <%= @fullname %>
+   email = <%= @email %>
+   signingkey = <%= @signingkey %>
 [diff]
-	tool = meld
+   tool = meld
 [core]
-	excludesfile = /home/<%= @username %>/.gitignore_global
+   excludesfile = /home/<%= @username %>/.gitignore_global
 [push]
-	default = simple
+   default = simple
+   recurseSubmodules = check
 [color]
-	ui = auto
+   ui = auto
+[commit]
+   gpgsign = true
+[gc]
+   autoDetach = false
+[gpg]
+   program = /usr/bin/gpg2
+[gui]
+   pruneduringfetch = true
+[smartgit "submodule"]
+   fetchalways = false
+   update = true
+   initializenew = true
