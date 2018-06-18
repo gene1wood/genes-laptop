@@ -13,7 +13,7 @@ base_homedir = node['etc']['passwd'][node['base_user']['username']]['dir']
 # creates the apt repository itself
 remote_dpkg 'google-chrome-stable' do
   source "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-  not_if { File.exists?("#{Chef::Config['file_cache_path']}/google-chrome-stable_current_amd64.deb") }
+  not_if { File.exist?("#{Chef::Config['file_cache_path']}/google-chrome-stable_current_amd64.deb") }
 end
 
 
@@ -60,7 +60,7 @@ node['firefox']['profiles'].each do |profile|
     end
 end
 
-#TODO :
+# MANUAL : Firefox plugins
 # https://addons.mozilla.org/en-US/firefox/addon/ublock-origin/
 # https://addons.mozilla.org/en-US/firefox/addon/bug489729-disable-detach-and-t/
 # https://addons.mozilla.org/en-US/firefox/addon/s3menu-wizard/developers

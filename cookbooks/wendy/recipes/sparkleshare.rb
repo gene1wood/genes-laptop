@@ -38,7 +38,7 @@ template sparkelshare_config_filename do
       :folder_identifier => node['sparkleshare']['folder_identifier'],
       :path => node['sparkleshare']['path']
   })
-  not_if { File.exists?(sparkelshare_config_filename) }
+  not_if { File.exist?(sparkelshare_config_filename) }
 end
 
 file "#{base_homedir}/.config/sparkleshare/sparkleshare.#{node['base_user']['email']}.key" do
