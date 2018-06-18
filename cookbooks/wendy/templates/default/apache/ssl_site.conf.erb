@@ -1,0 +1,97 @@
+<% if node['apache']['version'] != '2.4' -%>
+NameVirtualHost *:<%= @params[:server_port] %>
+<% end -%>
+<VirtualHost *:<%= @params[:server_port] %>>
+  ServerName <%= @params[:server_name] %>
+  <% if @params[:server_aliases] -%>
+  ServerAlias <%= @params[:server_aliases].join " " %>
+  <% end -%>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options <%= [@params[:directory_options] || "FollowSymLinks" ].flatten.join " " %>
+    AllowOverride <%= [@params[:allow_override] || "None" ].flatten.join " " %>
+  <% if node['apache']['version'] == '2.4' -%>
+    Require all granted
+  <% else -%>
+    Order allow,deny
+    Allow from all
+  <% end -%>
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Location /server-status>
+    SetHandler server-status
+
+  <% if node['apache']['version'] == '2.4' -%>
+    Require local
+  <% else -%>
+    Order Deny,Allow
+    Deny from all
+    Allow from 127.0.0.1
+  <% end -%>
+
+  </Location>
+
+  RewriteEngine On
+  <%- if node['apache']['version'] == '2.4' -%>
+  LogLevel info rewrite:trace1
+  <%- else -%>
+  LogLevel info
+  RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
+  RewriteLogLevel 0
+  <%- end -%>
+
+  ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-error.log
+  CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:name] %>-access.log combined
+
+  <% if @params[:directory_index] -%>
+  DirectoryIndex <%= [@params[:directory_index]].flatten.join " " %>
+  <% end -%>
+
+  # Canonical host, <%= @params[:server_name] %>
+  RewriteCond %{HTTP_HOST}   !^<%= @params[:server_name] %> [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)$        http://<%= @params[:server_name] %>/$1 [L,R=301]
+
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [L,R=503]
+
+  SSLEngine on
+  SSLCertificateChainFile <%= @params[:cert_chain_filename] %>
+  SSLCertificateFile <%= @params[:cert_chain_filename] %>
+  SSLCertificateKeyFile <%= @params[:private_key_filename] %>
+  # Header always set Strict-Transport-Security "max-age=15768000"
+
+
+  # Complete list of settings for this module can be found at:
+  # https://github.com/pingidentity/mod_auth_openidc/blob/master/auth_openidc.conf
+
+  OIDCProviderMetadataURL https://<%= @params[:server_name] %>:8090/.well-known/openid-configuration
+  OIDCRedirectURI https://<%= @params[:server_name] %>/redirect_uri
+
+  #OIDCClientID YOUR_CLIENT_ID_HERE
+  #OIDCClientSecret YOUR_CLIENT_SECRET_HERE
+  OIDCResponseType "code"
+
+  # Setup session handling
+  # 1) Ensure the session cookie created follows the id_token expiration ("exp" attribute) expiration time
+  # 2) Recheck id token and user profile endpoints every 15 minutes
+  #OIDCScope "openid email profile"
+  OIDCOAuthTokenExpiryClaim exp absolute mandatory
+  OIDCPassIDTokenAs claims serialized
+  OIDCOAuthTokenIntrospectionInterval 15
+  OIDCUserInfoRefreshInterval 15
+  OIDCSessionMaxDuration 0
+
+  OIDCCryptoPassphrase <%= @params[:oidc_crypto_passphrase] %>
+  OIDCCookiePath /
+  OIDCCookieDomain <%= @params[:server_name] %>
+
+
+</VirtualHost>

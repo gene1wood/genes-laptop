@@ -25,6 +25,19 @@ web_app "test" do
   cookbook 'apache2'
 end
 
+# web_app "gene.security.allizom.org" do
+#   server_name 'gene.security.allizom.org'
+#   server_port 443
+#   docroot '/var/www/html'
+#   cookbook 'wendy'
+#   cert_chain_filename '/etc/ssl/certs/fullchain.pem'
+#   private_key_filename '/etc/ssl/private/privkey.pem'
+#   template 'apache/ssl_site.conf.erb'
+#   oidc_crypto_passphrase node['apache']['gene.security.allizom.org']['oidc_crypto_passphrase']
+# end
+
+
+
 firewall_rule 'http/https' do
   protocol :tcp
   port     [80, 443]
