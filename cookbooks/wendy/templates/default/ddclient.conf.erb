@@ -1,0 +1,7 @@
+protocol=dyndns2
+use=web, web=http://ipv4.nsupdate.info/myip
+ssl=yes  # yes = use https for updates
+server=ipv4.nsupdate.info
+login=<%= @domain_name %>
+password='<%= @password %>'
+<%= @domain_name %>

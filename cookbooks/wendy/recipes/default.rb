@@ -116,6 +116,15 @@ end
 
 # https://wiki.archlinux.org/index.php/Power_management#Sleep_hooks
 
+template "/etc/ddclient.conf" do
+  source 'ddclient.conf.erb'
+  mode '0600'
+  variables({
+      :domain_name => node['nsupdate.info']['domain_name'],
+      :password => node['nsupdate.info']['password']
+  })
+end
+
 # https://github.com/mixxxdj/mixxx/commit/56b8e3fb9e08a0b1b3b474aeef11eef4d7d37079#diff-d67062afe8552f2877ec13584f22cec9
 cookbook_file "/lib/udev/rules.d/60-mixxx-usb.rules" do
   source "lib/udev/rules.d/60-mixxx-usb.rules"
