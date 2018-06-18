@@ -483,6 +483,18 @@ remote_file "/etc/bash_completion.d/docker-compose" do
   mode "0644"
 end
 
+terraform_package_filename = "#{Chef::Config['file_cache_path']}/terraform.zip"
+remote_file terraform_package_filename do
+  source "https://releases.hashicorp.com/terraform/0.11.7/terraform_0.11.7_linux_amd64.zip"
+  checksum "6b8ce67647a59b2a3f70199c304abca0ddec0e49fd060944c26f666298e23418"
+  notifies :run, 'execute[unzip terraform]', :immediately
+end
+
+execute "unzip terraform" do
+  command "unzip #{terraform_package_filename} -d /usr/local/bin"
+  action :nothing
+end
+
 ############################################################ Manual Apt Repo ########################################################
 
 
