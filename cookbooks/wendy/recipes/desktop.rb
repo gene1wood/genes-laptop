@@ -99,6 +99,13 @@ desktop_settings "lid-close-battery-action" do
   user node['base_user']['username']
 end
 
+desktop_settings "button-power" do
+  schema "org.gnome.settings-daemon.plugins.power"
+  type "string"
+  value "shutdown"
+  user node['base_user']['username']
+end
+
 # Vino VNC server listen only on loopback
 desktop_settings "network-interface" do
   schema "org.gnome.Vino"
