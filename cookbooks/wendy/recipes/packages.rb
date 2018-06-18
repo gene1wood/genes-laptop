@@ -11,125 +11,142 @@ base_homedir = node['etc']['passwd'][node['base_user']['username']]['dir']
 
 package 'base OS packages' do
   package_name %w[
-    openssh-server
-    sshfs
-    curl
+    alsa-tools-gui
+    android-tools-adb
+    android-tools-fastboot
     apt-file
-    encfs
-    vlc
-    meld
-    pdftk
-    samba
-    screen
-    shutter
-    transmission-remote-gtk
-    gconf-editor
-    openvpn
-    network-manager-openvpn
-    ruby
-    ruby-dev
-    gksu
+    at
+    audacious
+    audacity
+    bsdgames
+    bzr
+    curl
     dconf-editor
-    gimp
-    unp
+    ddclient
     dos2unix
     dosbox
+    dstat
+    encfs
+    exfat-fuse
+    exfat-utils
     flac
+    gameconqueror
+    gconf-editor
+    gimp
+    gksu
+    golang
+    gparted
+    gtkpod
+    heimdall-flash
+    htop
+    httpie
+    httping
+    idn
     imagemagick
     inkscape
+    iotop
+    iperf
+    ipython
     knockd
     krename
     lame
-    mnemonicode
-    nmap
-    unetbootin
-    wireshark
-    xtightvncviewer
-    audacious
-    bsdgames
-    audacity
-    at
-    httpie
-    ipython
-    python-bs4
-    python-html2text
-    whois
-    python-yaml
-    openshot
-    iperf
-    powertop
     lsyncd
-    subversion
-    traceroute
-    sysv-rc-conf
-    xsel
-    android-tools-adb
-    android-tools-fastboot
-    heimdall-flash
-    bzr
-    golang
-    yubikey-personalization-gui
-    secure-delete
-    qrencode
     maildir-utils
-    vbrfix
-    mp3diags
-    wine
-    gameconqueror
-    htop
-    minicom
-    xinetd
-    tftpd
-    tftp
-    snmp
-    mencoder
-    exfat-fuse
-    exfat-utils
     mailutils
-    termsaver
-    unrar
-    sqlite3
-    phatch
-    puddletag
     mame
     mame-tools
-    pandoc
-    texlive
-    httping
-    alsa-tools-gui
-    idn
-    yubikey-personalization
-    compizconfig-settings-manager
-    python-matplotlib
-    moreutils
-    playonlinux
-    ddclient
+    meld
+    mencoder
+    minicom
     mkvtoolnix
-    tvnamer
-    tree
-    smartmontools
+    mnemonicode
+    moreutils
+    mp3diags
+    network-manager-openvpn
+    network-manager-openvpn-gnome
+    nmap
+    oathtool
+    openshot
+    openssh-server
+    openvpn
+    pandoc
+    pdftk
+    phatch
+    pitivi
+    playonlinux
+    powertop
+    puddletag
+    pwgen
+    python-bs4
+    python-html2text
+    python-matplotlib
+    python-yaml
     qreator
+    qrencode
     redshift
     redshift-gtk
-    gtkpod
-    pwgen
-    dstat
-    iotop
-    gparted
-    pitivi
-    oathtool
-    network-manager-openvpn-gnome
+    ruby
+    ruby-dev
+    samba
+    screen
+    secure-delete
+    shutter
+    smartmontools
+    snmp
+    sqlite3
+    sshfs
+    subversion
+    sysv-rc-conf
     task
+    termsaver
+    texlive
+    tftp
+    tftpd
+    traceroute
+    transmission-remote-gtk
+    tree
+    tvnamer
+    unetbootin
+    unp
+    unrar
+    vbrfix
+    vlc
+    whois
+    wine
+    wireshark
+    xinetd
+    xsel
+    xtightvncviewer
+    yubikey-personalization
+    yubikey-personalization-gui
   ]
 end
-# https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1296270
-for package_name in ['myspell-en-au',
-                     'myspell-en-gb',
-                     'myspell-en-za',
-                     'unity-webapps-common',
-                     'gnome-screensaver',
-                     'gnome-orca']
-  package package_name do
+
+if node["platform_version"] == "16.04"
+  package "base #{node["platform_version"]} OS packages" do
+    package_name %w[
+      compizconfig-settings-manager
+    ]
+  end
+
+  # https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1296270
+  for package_name in ['myspell-en-au',
+                       'myspell-en-gb',
+                       'myspell-en-za',
+                       'unity-webapps-common',
+                       'gnome-screensaver',
+                       'gnome-orca']
+    package package_name do
+      action :remove
+    end
+  end
+end
+
+if node["platform_version"] == "18.04"
+  package "packages to purge in #{node["platform_version"]}" do
+    package_name %w[
+      ubuntu-web-launchers
+    ]
     action :remove
   end
 end
@@ -193,9 +210,9 @@ remote_dpkg 'mullvad' do
   # source "https://www.mullvad.net/download/latest/linux/"
   # Mullvad 63 introduced depenency on [python-wxgtk3.0](https://packages.ubuntu.com/search?keywords=python-wxgtk3.0) not present in Ubuntu 14.04
   # MANUAL : mullvad depending on Ubuntu distro
-  source "https://www.mullvad.net/media/client/mullvad_62-1_all.deb"
+  source "https://www.mullvad.net/media/client/mullvad_67-1_all.deb"
   filename "mullvad_all.deb"
-  checksum "7df59d9a8071dd6da6a531e162806328b04165694661221d99a8b7f4f988a6b8"
+  checksum "444e9651dae55a266bac274c30099fd6b6ee00799f8dcabe6d90a4e046a7df1c"
 end
 
 remote_dpkg 'rescuetime' do
@@ -459,10 +476,10 @@ package 'signal-desktop'
 
 ############################################################ Remote Binary ##########################################################
 
-packer_package_filename = "#{Chef::Config['file_cache_path']}/packer_0.12.3_linux_amd64.zip"
+packer_package_filename = "#{Chef::Config['file_cache_path']}/packer.zip"
 remote_file packer_package_filename do
-  source 'https://releases.hashicorp.com/packer/0.12.3/packer_0.12.3_linux_amd64.zip'
-  checksum 'd11c7ff78f546abaced4fcc7828f59ba1346e88276326d234b7afed32c9578fe'
+  source 'https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip'
+  checksum '258d1baa23498932baede9b40f2eca4ac363b86b32487b36f48f5102630e9fbb'
   notifies :run, 'execute[unzip packer]', :immediately
 end
 
@@ -472,14 +489,14 @@ execute "unzip packer" do
 end
 
 remote_file '/usr/local/bin/docker-compose' do
-  source 'https://github.com/docker/compose/releases/download/1.16.1/docker-compose-Linux-x86_64'
-  checksum "1804b0ce6596efe707b9cab05d74b161833ed503f0535a937dd5d17bea8fc50a"
+  source 'https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64'
+  checksum '8a11713e11ed73abcb3feb88cd8b5674b3320ba33b22b2ba37915b4ecffdf042'
   mode "0755"
 end
 
 remote_file "/etc/bash_completion.d/docker-compose" do
-  source "https://raw.githubusercontent.com/docker/compose/1.16.1/contrib/completion/bash/docker-compose"
-  checksum "40d07c7b82d2cb4253c71a8107bcddbe6b7802efb6a8711aa4ec68fa5bdeb8d1"
+  source "https://raw.githubusercontent.com/docker/compose/1.21.2/contrib/completion/bash/docker-compose"
+  checksum '618ef7a88b4090a5e5708b5f44b18b3c811d8d6c98465977aa64fde39c6e7455'
   mode "0644"
 end
 
