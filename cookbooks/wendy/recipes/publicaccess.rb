@@ -28,13 +28,13 @@ directory '/srv/public/afs' do
 end
 
 cookbook_file '/etc/netatalk/afpd.conf' do
-    source 'publicaccess/netatalk/afpd.conf'
+    source name[1..-1]
     mode '0644'
     notifies :restart, 'service[netatalk]', :delayed
 end
 
 template '/etc/default/netatalk' do
-    source 'publicaccess/netatalk/netatalk.erb'
+    source name[1..-1] + '.erb'
     mode '0644'
     variables({
       :username => node['base_user']['username']
@@ -43,24 +43,24 @@ template '/etc/default/netatalk' do
 end
 
 cookbook_file '/etc/netatalk/AppleVolumes.default' do
-    source 'publicaccess/netatalk/AppleVolumes.default'
+    source name[1..-1]
     mode '0644'
     notifies :restart, 'service[netatalk]', :delayed
 end
 
 cookbook_file '/etc/nsswitch.conf' do
-    source 'nsswitch.conf'
+    source name[1..-1]
     mode '0644'
 end
 
 cookbook_file '/etc/avahi/services/afpd.service' do
-    source 'publicaccess/netatalk/afpd.service'
+    source name[1..-1]
     mode '0644'
     notifies :reload, 'service[avahi-daemon]', :delayed
 end
 
 cookbook_file '/etc/ufw/applications.d/afp' do
-    source 'publicaccess/ufw/afp'
+    source name[1..-1]
 end
 
 
@@ -71,9 +71,11 @@ end
 
 # TODO test if this works from a mac
 
-
-# samba_service_name = 'samba' # Ubuntu 14.04
-samba_service_name = 'smbd'  # Ubuntu 16.04
+if node["platform_version"] == "14.04"
+  samba_service_name = 'samba' # Ubuntu 14.04
+else
+  samba_service_name = 'smbd'  # Ubuntu 16.04
+end
 
 service samba_service_name do
     action :enable
@@ -85,7 +87,7 @@ directory '/srv/public/samba' do
 end
 
 cookbook_file '/etc/samba/smb.conf' do
-    source 'publicaccess/smb.conf'
+    source name[1..-1]
     mode '0644'
     notifies :reload, "service[#{samba_service_name}]", :delayed
 end
@@ -125,19 +127,19 @@ directory '/srv/public/nfs' do
 end
 
 cookbook_file '/etc/default/nfs-common' do
-    source 'publicaccess/nfs/nfs-common'
+    source name[1..-1]
     mode '0644'
     notifies :restart, 'service[nfs-server]', :delayed
 end
 
 cookbook_file '/etc/default/nfs-kernel-server' do
-    source 'publicaccess/nfs/nfs-kernel-server'
+    source name[1..-1]
     mode '0644'
     notifies :restart, 'service[nfs-server]', :delayed
 end
 
 template '/etc/exports' do
-    source 'publicaccess/exports.erb'
+    source name[1..-1] + '.erb'
     mode '0644'
     variables({
       :cidrs => node['nfs']['public']['cidrs']
@@ -146,7 +148,7 @@ template '/etc/exports' do
 end
 
 cookbook_file '/etc/ufw/applications.d/nfs' do
-    source 'publicaccess/ufw/nfs'
+    source name[1..-1]
 end
 
 # firewall_rule 'nfs-tcp' do
@@ -163,15 +165,20 @@ end
 mount '/export/public' do
     options 'bind'
     device '/srv/public/nfs'
-    pass 0
-    action [ :enable, :mount ]
+    pass 0  # When the value is 0 for UFS file systems, the file system is not checked by fsck.
+    action :enable
 end
 
 cookbook_file '/usr/local/bin/publicaccess.sh' do
-    source 'publicaccess/publicaccess.sh'
+    source name[1..-1]
     mode '0755'
 end
 
-# TODO 
+cookbook_file '/usr/local/bin/move_all_public_files_to_gene_scans' do
+    source name[1..-1]
+    mode '0755'
+end
+
+# TODO
 # webdav
 # ftp
