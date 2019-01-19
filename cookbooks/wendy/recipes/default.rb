@@ -126,6 +126,9 @@ for filename in ['default',
 end
 
 
+# TODO : Fix the touchpad right click in 18.04
+# https://itsfoss.com/fix-right-click-touchpad-ubuntu/
+
 =begin
 # MANUAL
 * install mozilla root ca in Firefox
@@ -246,16 +249,18 @@ Patch bin/pycharm.sh
 Configure Chalice
 https://github.com/awslabs/chalice/pull/216#issuecomment-270355138
 
+# Audacious
+Enable Crossfade plugin
+set time to 10 seconds and 5 seconds
+Enable Remove silence plugin
 
+# SpiderOak One
+# https://support.spideroak.com/hc/en-us/articles/115003763443-Replacing-a-Computer-or-Hard-Disk
+Login to SpiderOak App
+Create a new computer
 
-# Group membership
-gene adm cdrom sudo dip plugdev fuse lpadmin sambashare vboxusers wireshark
-
-sudo addgroup gene fuse
-sudo addgroup gene lpadmin
-sudo addgroup gene sambashare
-sudo addgroup gene vboxusers
-sudo addgroup gene wireshark
+# Mouse and touchpad
+Set touchpad to "natural scrolling"=Off
 
 =end
 
