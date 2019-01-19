@@ -10,7 +10,7 @@
 base_homedir = node['etc']['passwd'][node['base_user']['username']]['dir']
 
 package 'base OS packages' do
-  package_name %w[
+  package_name %w(
     alsa-tools-gui
     android-tools-adb
     android-tools-fastboot
@@ -112,7 +112,7 @@ package 'base OS packages' do
     xtightvncviewer
     yubikey-personalization
     yubikey-personalization-gui
-  ]
+  )
 end
 
 if node["platform_version"] == "16.04"
