@@ -14,7 +14,20 @@ user node['base_user']['username'] do
   action :modify
 end
 
-# TODO : Add user to both user groups : vboxusers and wireshark
+group 'santaclara' do
+  gid 3000
+  append true
+  members [node['base_user']['username']]
+end
+
+['fuse', 'lpadmin', 'sambashare', 'vboxusers', 'wireshark', 'docker'].each do |group_name|
+  group group_name do
+    append true
+    members [node['base_user']['username']]
+    action :manage  # Manage an existing group. This action does nothing if the group does not exist.
+  end
+end
+
 
 file '/etc/sudoers.d/custom' do
   content "%sudo  ALL=(ALL:ALL) NOPASSWD: ALL"
