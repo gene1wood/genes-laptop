@@ -263,6 +263,24 @@ file '/etc/xdg/autostart/VidyoDesktop.desktop' do
   action :delete
 end
 
+# https://github.com/bitwarden/browser/issues/580#issuecomment-387456254
+# https://github.com/ibus/ibus/issues/2002#issuecomment-396711051
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1405634#c16
+# https://bugzilla.mozilla.org/attachment.cgi?id=8974077
+ibus_filename = "ibus-gtk3_1.5.17-3ubuntu4_amd64.deb"
+cookbook_file "#{Chef::Config['file_cache_path']}/#{ibus_filename}" do
+  source ibus_filename
+end
+
+dpkg_package 'ibus-gtk3' do
+  source "#{Chef::Config['file_cache_path']}/#{ibus_filename}"
+  # not_if "dpkg -s #{@name}"
+  not_if { ::File.size?('/usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immodules/im-ibus.so') == 30744 }
+end
+
+
+
+
 
 ################################################## Apt Repos #####################################################
 
