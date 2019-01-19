@@ -42,15 +42,29 @@ include_recipe 'wendy::btsync'
 # include_recipe 'wendy::desktop'
 # include_recipe 'wendy::desktoptest'
 
+
+
+
 template "#{base_homedir}/.gnupg/gpg.conf" do
-  source 'gpg.conf.erb'
+  source 'homedir/.gnupg/gpg.conf.erb'
   owner node['base_user']['username']
   group node['base_user']['username']
   mode '0600'
   variables({
-      :basedir => node['gpg']['basedir'],
-      :default_key => node['gpg']['default_key']
-  })
+                :basedir => node['gpg']['basedir'],
+                :default_key => node['gpg']['default_key']
+            })
+end
+
+directory "#{base_homedir}/.gnupg/private-keys-v1.d" do
+  action :delete
+  only_if { ::Dir.exists?(name) and ::Dir.empty?(name) }
+end
+
+link "#{base_homedir}/.gnupg/private-keys-v1.d" do
+  owner node['base_user']['username']
+  group node['base_user']['username']
+  to "#{base_homedir}/code/keybase/gene_wood/gene-secrets/Keys and Certs/gpg/private-keys-v1.d"
 end
 
 # http://askubuntu.com/a/252192/14601
