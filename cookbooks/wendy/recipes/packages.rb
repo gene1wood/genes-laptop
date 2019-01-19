@@ -33,7 +33,6 @@ package 'base OS packages' do
     gameconqueror
     gconf-editor
     gimp
-    gksu
     golang
     gparted
     gtkpod
@@ -59,7 +58,6 @@ package 'base OS packages' do
     mencoder
     minicom
     mkvtoolnix
-    mnemonicode
     moreutils
     mp3diags
     network-manager-openvpn
@@ -70,8 +68,6 @@ package 'base OS packages' do
     openssh-server
     openvpn
     pandoc
-    pdftk
-    phatch
     pitivi
     playonlinux
     powertop
@@ -96,8 +92,6 @@ package 'base OS packages' do
     sqlite3
     sshfs
     subversion
-    sysv-rc-conf
-    task
     termsaver
     texlive
     tftp
@@ -112,7 +106,6 @@ package 'base OS packages' do
     vbrfix
     vlc
     whois
-    wine
     wireshark
     xinetd
     xsel
@@ -124,30 +117,46 @@ end
 
 if node["platform_version"] == "16.04"
   package "base #{node["platform_version"]} OS packages" do
-    package_name %w[
+    package_name %w(
       compizconfig-settings-manager
-    ]
+      sysv-rc-conf
+      pdftk
+      gksu
+      phatch
+      mnemonicode
+      wine
+      task
+    )
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1296270
-  for package_name in ['myspell-en-au',
-                       'myspell-en-gb',
-                       'myspell-en-za',
-                       'unity-webapps-common',
-                       'gnome-screensaver',
-                       'gnome-orca']
-    package package_name do
-      action :remove
-    end
+  package "packages to purge in #{node["platform_version"]}" do
+    package_name %w(
+      myspell-en-au
+      myspell-en-gb
+      myspell-en-za
+      unity-webapps-common
+      gnome-screensaver
+      gnome-orca
+    )
+    action :remove
   end
 end
 
 if node["platform_version"] == "18.04"
   package "packages to purge in #{node["platform_version"]}" do
-    package_name %w[
+    package_name %w(
       ubuntu-web-launchers
-    ]
+    )
     action :remove
+  end
+  package "base #{node["platform_version"]} OS packages" do
+    package_name %w(
+      wine-stable
+      taskwarrior
+      gnome-shell-extensions
+      chrome-gnome-shell
+    )
   end
 end
 
