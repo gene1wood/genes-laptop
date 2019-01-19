@@ -256,6 +256,13 @@ remote_dpkg 'python3-multibootusb' do
   #action :install # auto updates itself so we should skip this if it's installed
 end
 
+# MANUAL : pdftk
+# Currently pdftk is missing for 18.04
+# The workaround is to install manually like this : https://bugs.launchpad.net/ubuntu/+source/pdftk/+bug/1764450/comments/4
+# Preceded by
+# apt install gcc-6-base libpython-stdlib python python-minimal python2.7 python2.7-minimal
+#
+
 ################################################## Local Dpkg ####################################################
 
 
