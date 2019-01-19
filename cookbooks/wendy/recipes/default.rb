@@ -102,6 +102,35 @@ cookbook_file "#{base_homedir}/.pypirc" do
   mode '0600'
 end
 
+directory "#{base_homedir}/.ssh" do
+  owner node['base_user']['username']
+  group node['base_user']['username']
+  mode '0700'
+end
+
+directory "#{base_homedir}/.ssh/config.d" do
+  owner node['base_user']['username']
+  group node['base_user']['username']
+  mode '0755'
+end
+
+file "#{base_homedir}/.ssh/config" do
+  owner node['base_user']['username']
+  group node['base_user']['username']
+  mode '0644'
+  content "# https://superuser.com/a/1142813/57284\nInclude config.d/*\n"
+end
+
+for filename in ['default',
+                 'git-internal.mozilla.org'] do
+  cookbook_file "#{base_homedir}/.ssh/config.d/#{filename}" do
+    source "homedir/.ssh/config.d/#{filename}"
+    owner node['base_user']['username']
+    group node['base_user']['username']
+    mode '0644'
+  end
+end
+
 service 'avahi-daemon'
 
 cookbook_file "/etc/avahi/avahi-daemon.conf" do
