@@ -538,6 +538,7 @@ end
 
 python_package 'awslogs'
 python_package 'bugwarrior'
+python_package 'pipenv'
 
 ############################################################ Ruby ###################################################################
 
