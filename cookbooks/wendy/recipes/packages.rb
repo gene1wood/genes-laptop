@@ -342,8 +342,9 @@ apt_repository 'yubico' do
   distribution node['lsb']['codename']
 end
 
-package 'yubikey-neo-manager'
-package 'yubioath-desktop'
+package ['yubikey-manager',
+         'yubikey-manager-qt',
+         'yubioath-desktop']
 
 apt_repository 'getdeb' do
   uri 'http://archive.getdeb.net/ubuntu'
