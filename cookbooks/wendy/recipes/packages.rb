@@ -239,12 +239,17 @@ remote_dpkg 'geogebra5' do
   action :install # auto updates itself so we should skip this if it's installed
 end
 
-package ['libqt5clucene5',
-         'libqt5designer5',
-         'libqt5help5',
-         'python3-pyqt5',
-         'python3-pyudev',
-         'python3-sip']
+if node["platform_version"] == "16.04"
+  package ['libqt5clucene5',
+           'libqt5designer5',
+           'libqt5help5',
+           'python3-pyqt5',
+           'python3-pyudev',
+           'python3-sip']
+end
+if node["platform_version"] == "18.04"
+  package ['python3-pyudev']
+end
 remote_dpkg 'python3-multibootusb' do
   source "https://github.com/mbusb/multibootusb/releases/download/v8.8.0/python3-multibootusb_8.8.0-1_all.deb"
   checksum "8dd041f99b95a7b5a4140b27c85cbf3af75a14ae4bdf61202a3ca3d65dadba60"
