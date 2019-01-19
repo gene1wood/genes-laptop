@@ -252,11 +252,16 @@ cookbook_file "#{Chef::Config['file_cache_path']}/#{vidyo_filename}" do
   source vidyo_filename
 end
 
-# This libqt4-gui requirement is screwing things up
-#dpkg_package 'vidyodesktop' do
-#  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
-#  version vidyo_version
-#end
+dpkg_package 'vidyodesktop' do
+  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
+  version vidyo_version
+  not_if "dpkg -s #{@name}"
+end
+
+# https://bugzilla.mozilla.org/show_bug.cgi?id=701083#c98
+file '/etc/xdg/autostart/VidyoDesktop.desktop' do
+  action :delete
+end
 
 
 ################################################## Apt Repos #####################################################
