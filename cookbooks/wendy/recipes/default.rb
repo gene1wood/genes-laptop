@@ -60,26 +60,6 @@ cookbook_file "#{base_homedir}/.config/gtk-3.0/gtk.css" do
   group node['base_user']['username']
 end
 
-service 'procps'
-
-cookbook_file '/etc/sysctl.d/60-disable-ipv6.conf' do
-  source 'sysctl.d/60-disable-ipv6.conf'
-  notifies :start, 'service[procps]', :immediately
-end
-
-cookbook_file '/etc/default/grub' do
-  source 'etc/default/grub'
-  notifies :run, 'execute[update-grub]', :immediately
-end
-
-execute 'update-grub' do
-  action :nothing
-end
-
-cookbook_file '/etc/fuse.conf' do
-  source 'fuse.conf'
-end
-
 cookbook_file "#{base_homedir}/.migrc" do
   source 'migrc'
   owner node['base_user']['username']
@@ -129,36 +109,6 @@ for filename in ['default',
     group node['base_user']['username']
     mode '0644'
   end
-end
-
-service 'avahi-daemon'
-
-cookbook_file "/etc/avahi/avahi-daemon.conf" do
-  source 'avahi-daemon.conf'
-  notifies :restart, 'service[avahi-daemon]', :delayed
-end
-
-# I'd disabled this for some reason, not sure why
-# if this causes a problem again, note why here
-cookbook_file "/usr/lib/pm-utils/sleep.d/45disablelidwakeup" do
- source 'usr/lib/pm-utils/sleep.d/45disablelidwakeup'
- mode '0755'
-end
-
-# https://wiki.archlinux.org/index.php/Power_management#Sleep_hooks
-
-template "/etc/ddclient.conf" do
-  source 'ddclient.conf.erb'
-  mode '0600'
-  variables({
-      :domain_name => node['nsupdate.info']['domain_name'],
-      :password => node['nsupdate.info']['password']
-  })
-end
-
-# https://github.com/mixxxdj/mixxx/commit/56b8e3fb9e08a0b1b3b474aeef11eef4d7d37079#diff-d67062afe8552f2877ec13584f22cec9
-cookbook_file "/lib/udev/rules.d/60-mixxx-usb.rules" do
-  source "lib/udev/rules.d/60-mixxx-usb.rules"
 end
 
 

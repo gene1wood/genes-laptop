@@ -1,0 +1,10 @@
+/var/log/dpkg.log {
+	monthly
+#	rotate 12
+	rotate 48
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 644 root root
+}
