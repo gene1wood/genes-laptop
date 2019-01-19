@@ -35,9 +35,10 @@ for filename in ['smartgit',
                  'dorothy-socks-proxy',
                  'screencast',
                  'pack_animation.py',
-                 'ngrok'] do
+                 'ngrok',
+                 'pingmon.py'] do
     cookbook_file "#{base_homedir}/bin/#{filename}" do
-      source "bin/#{filename}"
+      source "homedir/bin/#{filename}"
       owner node['base_user']['username']
       group node['base_user']['username']
       mode '0755'
@@ -48,24 +49,25 @@ for filename in ['move_all_public_files_to_gene_scans',
                  'find_core_dumps',
                  'free-up-space-on-boot-volume'] do
     cookbook_file "/root/bin/#{filename}" do
-      source "bin/#{filename}"
+      source name[1..-1]
       mode '0755'
     end
 end
 
 
 cookbook_file "#{base_homedir}/.bashrc" do
-  source "bashrc"
+  source "homedir/.bashrc"
   owner node['base_user']['username']
   group node['base_user']['username']
 end
 
 cookbook_file "#{base_homedir}/.bash_aliases" do
-  source "bash_aliases"
+  source "homedir/.bash_aliases"
   owner node['base_user']['username']
   group node['base_user']['username']
 end
 
-cookbook_file "/var/www/html/custom-proxy-config.pac" do
-  source "custom-proxy-config.pac"
-end
+# This depends on apache being installed
+# cookbook_file "/var/www/html/custom-proxy-config.pac" do
+#   source name[1..-1]
+# end
