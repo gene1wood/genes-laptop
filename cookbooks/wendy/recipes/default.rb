@@ -74,20 +74,7 @@ cookbook_file "#{base_homedir}/.config/gtk-3.0/gtk.css" do
   group node['base_user']['username']
 end
 
-cookbook_file "#{base_homedir}/.migrc" do
-  source 'migrc'
-  owner node['base_user']['username']
-  group node['base_user']['username']
-end
 
-# MANUAL : mig-loader
-# Disabling this as when it runs it overwrites the config : https://github.com/mozilla/mig/issues/347
-# I've also disabled the mig-agent service which the mig-loader installs with
-# update-rc.d -f mig-agent remove
-#
-# cookbook_file "/etc/cron.d/mig-loader" do
-#   source 'etc/cron.d/mig-loader'
-# end
 
 cookbook_file "#{base_homedir}/.pypirc" do
   source 'pypirc'
