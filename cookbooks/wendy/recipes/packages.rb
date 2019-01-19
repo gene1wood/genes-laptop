@@ -165,7 +165,7 @@ end
 # https://keybase.io/docs/the_app/linux_expired_key
 remote_dpkg 'keybase' do
   source "https://prerelease.keybase.io/keybase_amd64.deb"
-  checksum "722c9a801f235d6aca21ecd18b1f077356aed1e57334b58d3c3095bcec82ce2e"
+  checksum "76333c6c50f797d83237535a429ea8ed7fa986af690d4346060fee0a1a0ce135"
   action :install # keybase auto updates itself so we should skip this if it's installed
   # source "https://dist.keybase.io/linux/deb/keybase-latest-amd64.deb"
   # checksum "0fa9860a0ce77b0507b440115a55c710e53d71eb4d181014f4b7150c341736db"
@@ -174,15 +174,15 @@ end
 remote_dpkg 'spideroakone' do
   source "https://spideroak.com/release/spideroak/deb_x64"
   filename "spideroakone.deb"
-  checksum "a94d4ad3657d7437ee4ef5b7a5feb2687b78dafab45f94c6cb2fb5f246c9dcfe"
+  checksum "6d745db2772feefa4ef80e589b8172c6c396c4e2b68fc4d961dac5661baeddd0"
   action :install # spideroakone auto updates itself so we should skip this if it's installed
 end
 
-package 'python-apt'
-
+package ['python-apt',
+         'libgl1-mesa-glx:i386']
 remote_dpkg 'steam' do
   source "https://steamcdn-a.akamaihd.net/client/installer/steam.deb"
-  checksum "45aa0aaec0183f667ae985667ef2ca4bab9391fbe0fa398ac9f2ca32dfb526d8"
+  checksum "cb71d32b7d6e6a7d8c0016db9d8d2d3f95d4f48bc41213190401237e9b482280"
   # No need to upgrade this package because steam has it's own internal self
   # updating mechanism
   not_if "dpkg-query -W 'steam'"
@@ -204,7 +204,7 @@ end
 remote_dpkg 'Semaphor' do
   source "https://spideroak.com/release/semaphor/deb_x64"
   filename "semaphor_amd64.deb"
-  checksum "dc86e96e4d6148f9e320d396ff25cb9291d582edd768bc8bdc706c454ffafa26"
+  checksum "686c87edee9b06a92bf8b193e2b6a5805e97423a0a67953628b245ded9cf28d9"
   action :install # semaphor auto updates itself so we should skip this if it's installed
 end
 
@@ -214,25 +214,28 @@ package ['python-appindicator',
          'python-appdirs',
          'python-netifaces',
          'python-ipaddr',
-         'python-psutil']
+         'python-psutil',
+         'resolvconf']
 remote_dpkg 'mullvad' do
   # source "https://www.mullvad.net/download/latest/linux/"
   # Mullvad 63 introduced depenency on [python-wxgtk3.0](https://packages.ubuntu.com/search?keywords=python-wxgtk3.0) not present in Ubuntu 14.04
   # MANUAL : mullvad depending on Ubuntu distro
-  source "https://www.mullvad.net/media/client/mullvad_67-1_all.deb"
+  source "https://mullvad.net/media/app/MullvadVPN-2018.6_amd64.deb"
   filename "mullvad_all.deb"
-  checksum "444e9651dae55a266bac274c30099fd6b6ee00799f8dcabe6d90a4e046a7df1c"
+  checksum "00384f8379b7a3a9eb2fef2662f1ae37c8913868e5e0e1282f21601fafa8b79e"
 end
 
+package ['libqt4-sql-sqlite']
 remote_dpkg 'rescuetime' do
   source "https://www.rescuetime.com/installers/rescuetime_current_amd64.deb"
-  checksum "90b30405b98e8da7aa670acdcffa52e79ae212c1f833556646ab31455cd05708"
+  checksum "2d8b970f9d0ac73974cf3c2717340702f4beb450a8945263cbd6c375b199e3d3"
+  #action :install # auto updates itself so we should skip this if it's installed
 end
 
 
 remote_dpkg 'geogebra5' do
-  source "http://www.geogebra.net/linux/pool/main/g/geogebra5/geogebra5_5.0.390.0-569040_amd64.deb"
-  checksum "207609735f1eb1fc6174fd5302102022fbbf8f7dfaba4cadfde2dda315524d55"
+  source "http://www.geogebra.net/linux/pool/main/g/geogebra5/geogebra5_5.0.487.0-636500_amd64.deb"
+  checksum "f45fbb3b48ae7cc65f0a7d224583307a029ef40c074e3264e725087a659d47c1"
   action :install # auto updates itself so we should skip this if it's installed
 end
 
@@ -274,7 +277,8 @@ end
 
 # https://github.com/bitwarden/browser/issues/580#issuecomment-387456254
 # https://github.com/ibus/ibus/issues/2002#issuecomment-396711051
-# https://bugzilla.mozilla.org/show_bug.cgi?id=1405634#c16
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1405634#    wine
+c16
 # https://bugzilla.mozilla.org/attachment.cgi?id=8974077
 ibus_filename = "ibus-gtk3_1.5.17-3ubuntu4_amd64.deb"
 cookbook_file "#{Chef::Config['file_cache_path']}/#{ibus_filename}" do
