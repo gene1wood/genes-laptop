@@ -29,12 +29,13 @@ firewall_rule 'kdeconnect udp' do
   port     1714..1764
 end
 
-firewall_rule 'btsync tcp' do
-  protocol  :tcp
-  port     node[:btsync][:port]
-end
-
-firewall_rule 'btsync udp' do
-  protocol  :udp
-  port     node[:btsync][:port]
-end
+# I don't think we need this anymore
+# firewall_rule 'btsync tcp' do
+#   protocol  :tcp
+#   port     node[:btsync][:port]
+# end
+#
+# firewall_rule 'btsync udp' do
+#   protocol  :udp
+#   port     node[:btsync][:port]
+# end

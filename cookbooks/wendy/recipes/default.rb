@@ -49,7 +49,7 @@ include_recipe 'wendy::firewall'
 include_recipe 'wendy::fonts'
 include_recipe 'wendy::teamviewer'
 include_recipe 'wendy::inkscape'
-include_recipe 'wendy::btsync'
+# include_recipe 'wendy::btsync'
 
 # MANUAL : desktop recipe
 # include_recipe 'wendy::desktop'

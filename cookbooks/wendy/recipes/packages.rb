@@ -334,15 +334,16 @@ end
 
 package 'oracle-java8-installer'
 
+# Disabling for the time being as I'm not using btsync much other than kalx
 # http://blog.bittorrent.com/2016/02/18/official-linux-packages-for-sync-now-available/
-apt_repository 'btsync' do
-  uri 'http://linux-packages.getsync.com/btsync/deb'
-  distribution 'btsync'
-  components ['non-free']
-  key 'https://linux-packages.resilio.com/resilio-sync/key.asc'
-end
-
-package "btsync"
+# apt_repository 'btsync' do
+#   uri 'http://linux-packages.getsync.com/btsync/deb'
+#   distribution 'btsync'
+#   components ['non-free']
+#   key 'https://linux-packages.resilio.com/resilio-sync/key.asc'
+# end
+#
+# package "btsync"
 
 apt_repository 'daveg-attract' do
   uri 'ppa:daveg/attract'
