@@ -1,3 +1,6 @@
+# Netatalk 2.x afp volume cofiguration
+
+#
 # volume format:
 # :DEFAULT: [all of the default options except volume name]
 # path [name] [casefold:x] [options:z,l,j] \
@@ -174,7 +177,7 @@
 :DEFAULT: options:upriv,usedots
 
 # By default all users have access to their home directories.
-# ~/			"Home Directory"
+#~/			"Home Directory"
 
 /srv/public/afs "Public"    allow:guest,nobody cnidscheme:dbd
 
