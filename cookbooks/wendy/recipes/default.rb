@@ -82,7 +82,7 @@ end
 
 # http://askubuntu.com/a/252192/14601
 cookbook_file "#{base_homedir}/.config/gtk-3.0/gtk.css" do
-  source 'gtk.css'
+  source 'homedir/.config/gtk-3.0/gtk.css'
   owner node['base_user']['username']
   group node['base_user']['username']
 end
@@ -90,7 +90,7 @@ end
 
 
 cookbook_file "#{base_homedir}/.pypirc" do
-  source 'pypirc'
+  source 'homedir/.pypirc'
   owner node['base_user']['username']
   group node['base_user']['username']
   mode '0600'
