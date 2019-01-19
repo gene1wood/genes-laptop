@@ -34,8 +34,17 @@ action :install do
 end
 
 
-action :delete do
+action :remove do
   dpkg_package new_resource.package_name do
-    action :delete
+    action :remove
   end
 end
+
+action :purge do
+  dpkg_package new_resource.package_name do
+    action :purge
+  end
+end
+
+# TODO : Update this to support asserting a list of package names and a list of source URLs so they get downloaded
+# one at a time, then a single dpkg installation for the list of all downloaded files occurs
