@@ -84,3 +84,4 @@ end
 # MANUAL : sublime-text plugins
 # https://packagecontrol.io/installation
 # https://github.com/SublimeText-Markdown/MarkdownEditing
+# https://github.com/dzhibas/SublimePrettyJson
