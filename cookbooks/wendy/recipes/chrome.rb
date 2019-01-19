@@ -40,8 +40,15 @@ end
 # :is_default is required because of this :
 # http://kb.mozillazine.org/Opening_a_new_instance_of_your_Mozilla_application_with_another_profile
 node['firefox']['profiles'].each do |profile|
-    template "#{base_homedir}/.local/share/applications/#{profile}.desktop" do
-        source 'firefox.desktop.erb'
+    cookbook_file "#{base_homedir}/.local/share/applications/firefox-#{profile}.png" do
+        source "homedir/.local/share/applications/firefox-#{profile}.png"
+        owner node['base_user']['username']
+        group node['base_user']['username']
+        mode '0644'
+    end
+
+    template "/tmp/firefox-#{profile}.desktop" do
+        source 'homedir/.local/share/applications/firefox-profile.desktop.erb'
         owner node['base_user']['username']
         group node['base_user']['username']
         mode '0644'
@@ -50,13 +57,24 @@ node['firefox']['profiles'].each do |profile|
             :base_homedir => base_homedir,
             :is_default => (node['firefox']['default'] == profile)
         })
+        not_if { File.exists?("#{base_homedir}/.local/share/applications/firefox-#{profile}.desktop") }
+        notifies :run, "execute[desktop-file-install #{profile}]", :immediately
     end
 
-    cookbook_file "#{base_homedir}/.local/share/applications/#{profile}.png" do
-        source "#{profile}.png"
-        owner node['base_user']['username']
+    execute "desktop-file-install #{profile}" do
+        command "desktop-file-install --delete-original --dir #{base_homedir}/.local/share/applications /tmp/firefox-#{profile}.desktop"
+        user node['base_user']['username']
         group node['base_user']['username']
-        mode '0644'
+        environment ({:HOME => base_homedir})
+        creates "#{base_homedir}/.local/share/applications/firefox-#{profile}.desktop"
+        action :nothing
+    end
+
+    execute "firefox -no-remote -CreateProfile #{profile}" do
+        user node['base_user']['username']
+        group node['base_user']['username']
+        environment ({:HOME => base_homedir})
+        not_if { Dir.glob("#{base_homedir}/.mozilla/firefox/*.#{profile}").any? }
     end
 end
 
@@ -74,3 +92,5 @@ end
 # https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
 # https://addons.mozilla.org/en-us/firefox/addon/reddit-enhancement-suite/
 # https://addons.mozilla.org/en-US/firefox/addon/rehost-image/
+# For 18.04:
+# https://addons.mozilla.org/en-GB/firefox/addon/gnome-shell-integration/
