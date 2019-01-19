@@ -266,11 +266,23 @@ end
 ################################################## Local Dpkg ####################################################
 
 
+# To work around the libqt4-gui problem I've followed these guidelines and produced a new deb file
 # https://askubuntu.com/questions/762462/how-to-install-vidyodesktop-on-ubuntu-16-04-lts
 # https://support.vidyocloud.com/hc/en-us/articles/226103528-VidyoDesktop-3-6-3-for-Linux-and-Ubuntu-15-04-and-higher
 #package 'libqt4-gui'
 # dpkg -i --ignore-depends=libqt4-gui /root/.chef/local-mode-cache/cache/VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb
-vidyo_filename = "VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb"
+#vidyo_filename = "VidyoDesktopInstaller-ubuntu64-TAG_VD_3_6_3_017.deb"
+
+
+# https://bugzilla.mozilla.org/show_bug.cgi?id=701083#c127
+if node["platform_version"] == "18.04"
+  package "stalonetray"
+  # TODO : enable stalonetray by creating a systemctl service thing to launch it or something
+  # stalonetray -geometry +80+32 &
+end
+
+
+vidyo_filename = "VidyoDesktopInstaller-ubuntu64-TAG_VD_3_3_0_027-no-libqt4-gui-dependency.deb"
 vidyo_version = "3.6.3-017"
 cookbook_file "#{Chef::Config['file_cache_path']}/#{vidyo_filename}" do
   source vidyo_filename
@@ -289,8 +301,7 @@ end
 
 # https://github.com/bitwarden/browser/issues/580#issuecomment-387456254
 # https://github.com/ibus/ibus/issues/2002#issuecomment-396711051
-# https://bugzilla.mozilla.org/show_bug.cgi?id=1405634#    wine
-c16
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1405634#c16
 # https://bugzilla.mozilla.org/attachment.cgi?id=8974077
 ibus_filename = "ibus-gtk3_1.5.17-3ubuntu4_amd64.deb"
 cookbook_file "#{Chef::Config['file_cache_path']}/#{ibus_filename}" do
