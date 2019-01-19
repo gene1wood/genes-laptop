@@ -324,12 +324,12 @@ apt_repository 'virtualbox' do
   uri 'http://download.virtualbox.org/virtualbox/debian'
   distribution node['lsb']['codename']
   components ['contrib']
-  # keyserver 'keyserver.ubuntu.com'
-  # key '98AB5139'
-  key 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
+  arch 'amd64' # https://askubuntu.com/a/1029865/14601
+  key 'B9F8D658297AF3EFC18D5CDFA2F683C52980AECF'
+  # key 'https://www.virtualbox.org/download/oracle_vbox_2016.asc'
 end
 
-package 'virtualbox-5.2'
+package 'virtualbox-6.0'
 
 # MANUAL : sudo usermod -a -G vboxusers node['base_user']['username']
 
