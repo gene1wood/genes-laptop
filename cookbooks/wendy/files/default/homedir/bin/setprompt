@@ -139,6 +139,7 @@ USER_AT_HOST="${usercolor}\u@\h${nocolor}"
 source ~/bin/git-prompt.sh
 GIT_PS1_SHOWCOLORHINTS=true
 GIT="\$(__git_ps1 \" (%s)\")"
+AWS_PROFILE=
 PS1="${TITLE_BAR}${DATE_ERRORCODE} ${CHROOT}${USER_AT_HOST} ${pathcolor}\w${GIT}${nocolor}\$ "
 
 if [ -n "$ASCIINEMA_REC" ]; then
