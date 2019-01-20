@@ -567,7 +567,6 @@ apt_repository 'nodesource' do
   uri 'https://deb.nodesource.com/node_8.x'
   distribution node['lsb']['codename']
   components ['main']
-  keyserver 'keyserver.ubuntu.com'
   key '9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280'
 end
 
@@ -580,7 +579,8 @@ apt_repository 'docker' do
   distribution node['lsb']['codename']
   components ['stable']
   arch 'amd64'
-  key 'https://download.docker.com/linux/ubuntu/gpg'
+  # key 'https://download.docker.com/linux/ubuntu/gpg'
+  key '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
 end
 
 package 'docker-ce'
@@ -589,10 +589,13 @@ package 'docker-ce'
 # https://signal.org/download/
 apt_repository 'signal' do
   uri 'https://updates.signal.org/desktop/apt'
-  distribution node['lsb']['codename']
+  # distribution node['lsb']['codename']
+  # This isn't yet available for bionic 18.04 so we'll force it to xenial 16.04
+  distribution "xenial"
   components ['main']
   arch 'amd64'
-  key 'https://updates.signal.org/desktop/apt/keys.asc'
+  # key 'https://updates.signal.org/desktop/apt/keys.asc'
+  key 'DBA36B5181D0C816F630E889D980A17457F6FB06'
 end
 
 package 'signal-desktop'
