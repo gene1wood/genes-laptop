@@ -380,6 +380,9 @@ apt_repository 'webupd8team-indicator-kdeconnect' do
   distribution node['lsb']['codename']
 end
 
+# TODO : Consider using this fork of kdeconnect instead?
+# https://github.com/Bajoja/indicator-kdeconnect
+
 package 'indicator-kdeconnect'
 package 'kdeconnect'
 
@@ -509,6 +512,7 @@ apt_repository 'mixxx-mixxx' do
   distribution node['lsb']['codename']
 end
 
+# Now that this bug is fixed https://bugs.launchpad.net/mixxx/+bug/1532631 I can re-enable mixxx
 package 'mixxx'
 
 apt_repository 'cpick-hub' do
@@ -519,8 +523,6 @@ end
 
 package 'hub'
 
-# MANUAL : tails-installer depending on Unbuntu distro
-# There's no package for 14.04 unfortunately
 apt_repository 'tails-team-tails-installer' do
   uri 'ppa:tails-team/tails-installer'
   distribution node['lsb']['codename']
@@ -624,10 +626,6 @@ end
 ############################################################ Manual Apt Repo ########################################################
 
 
-# MANUAL : When we upgrade to 16.04 install republicanywhere
-# http://www.omgubuntu.co.uk/2017/07/republic-wireless-anywhere-linux
-
-
 # systemctl mask unattended-upgrades
 # https://unix.stackexchange.com/a/369582/22701
 
@@ -651,7 +649,8 @@ python_package 'pipenv'
 
 ############################################################ Ruby ###################################################################
 
-gem_package 'chef'
+# Why did we need to install the chef gem?
+# gem_package 'chef'
 
 # git : see git.rb
 
@@ -662,3 +661,18 @@ gem_package 'chef'
 # rubymine
 # phpstorm with snap
 # https://www.jetbrains.com/phpstorm/download/#section=linux
+#
+# Packages no longer available
+#
+# gksu has been removed from Ubuntu https://bugs.launchpad.net/ubuntu/+source/umit/+bug/1740618
+# mnemonicode isn't present in Ubuntu 18.04
+# phatch depends on python-imaging https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=866449
+#   Consider http://converseen.fasterland.net/ instead
+
+# MANUAL
+# Gnome Extensions
+# https://extensions.gnome.org/extension/1317/alt-tab-switcher-popup-delay-removal/
+# https://extensions.gnome.org/extension/826/suspend-button/
+#   https://askubuntu.com/a/967207/14601
+# https://extensions.gnome.org/extension/120/system-monitor/
+#   https://askubuntu.com/a/974204/14601
