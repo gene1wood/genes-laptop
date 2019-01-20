@@ -537,17 +537,29 @@ end
 
 package 'pulseaudio-equalizer'
 
-# https://askubuntu.com/a/765407
-apt_repository 'acestream' do
-  uri 'http://repo.acestream.org/ubuntu/'
-  # distribution node['lsb']['codename']
-  distribution 'trusty'
-  components ['main']
-  keyserver 'keyserver.ubuntu.com'
-  key 'E1254F21D636B7EFDE41D2AF50E2BCF0E3805CD8'
+if node["platform_version"] == "16.04"
+  # https://askubuntu.com/a/765407
+  apt_repository 'acestream' do
+    uri 'http://repo.acestream.org/ubuntu/'
+    # distribution node['lsb']['codename']
+    distribution 'trusty'
+    components ['main']
+    keyserver 'keyserver.ubuntu.com'
+    # When adding this key with chef I get an error but doing it manually works. Huh not sure.
+    key 'E1254F21D636B7EFDE41D2AF50E2BCF0E3805CD8'
+  end
+  package %w(acestream-engine)
 end
 
-package %w(acestream-engine)
+if node["platform_version"] == "18.04"
+  snap "acestreamplayer"
+
+  # https://askubuntu.com/a/1064838/14601
+  snap "gnome-system-monitor" do
+    action :remove
+  end
+  package "gnome-system-monitor"
+end
 
 # https://nodejs.org/en/download/package-manager/
 # node (nodejs) and npm in the Ubuntu repos are super old
