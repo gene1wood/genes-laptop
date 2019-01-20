@@ -86,7 +86,7 @@ package 'base OS packages' do
     samba
     screen
     secure-delete
-    shutter
+    flameshot
     smartmontools
     snmp
     sqlite3
@@ -436,13 +436,49 @@ end
 
 package 'handbrake-gtk'
 
-# http://shutter-project.org/downloads/
-apt_repository 'shutter-ppa' do
-  uri 'ppa:shutter/ppa'
-  distribution node['lsb']['codename']
+if node["platform_version"] == "16.04"
+  apt_repository 'shutter-ppa' do
+    uri 'ppa:shutter/ppa'
+    distribution node['lsb']['codename']
+  end
+
+  package 'shutter'
 end
 
-package 'shutter'
+if node["platform_version"] == "18.04"
+  # Looks 18.04 comes with shutter
+  # http://ubuntuhandbook.org/index.php/2018/04/fix-edit-option-disabled-shutter-ubuntu-18-04/
+  # http://shutter-project.org/downloads/
+  # https://itsfoss.com/shutter-edit-button-disabled/
+
+  package "libextutils-depends-perl"
+  package "libextutils-pkgconfig-perl"
+
+  remote_dpkg 'libgoocanvas-common' do
+    source "https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas-common_1.0.0-1_all.deb"
+    checksum "067cb55ea73bd4445e2115ae46982f6874fcb9fcefd1dba66b50b647cb3d6b64"
+    action :install # auto updates itself so we should skip this if it's installed
+  end
+
+  remote_dpkg 'libgoocanvas3' do
+    source "https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas3_1.0.0-1_amd64.deb"
+    checksum "d6329b2d89d728d6d00128fae707544880fb6b864aaac078f85eac20f85eb04c"
+    not_if "dpkg -s #{@name}"
+  end
+
+  package "libgoo-canvas-perl dependencies" do
+    package_name %w(
+      libgtk2-perl
+      libpango-perl
+  )
+  end
+  remote_dpkg 'libgoo-canvas-perl' do
+    source "https://launchpad.net/ubuntu/+archive/primary/+files/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb"
+    checksum "15f70008852e946fe2e32c23f2d238d044eecd07bd2fff02fa93a0ce3c7d1ac1"
+    not_if "dpkg -s #{@name}"
+  end
+  package "shutter"
+end
 
 # https://github.com/eosrei/emojione-color-font
 apt_repository 'eosrei-fonts' do
