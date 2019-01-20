@@ -685,6 +685,8 @@ end
 python_runtime '2' do
   provider :system
   version '2.7'
+  pip_version '10.0.1'
+  get_pip_url 'https://raw.githubusercontent.com/pypa/get-pip/04e994a41ff0a97812d6d25443318ef268bc2bca/3.3/get-pip.py'
 end
 
 python_package 'virtualenvwrapper'
