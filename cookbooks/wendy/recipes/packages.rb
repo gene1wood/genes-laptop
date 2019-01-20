@@ -111,6 +111,16 @@ package 'base OS packages' do
     xtightvncviewer
     yubikey-personalization
     yubikey-personalization-gui
+    jq
+    iftop
+    nethogs
+    gcc-6-base
+    nfs-common
+    ffmpeg
+    xournal
+    gir1.2-gtop-2.0
+    gir1.2-networkmanager-1.0
+    gir1.2-clutter-1.0
   )
 end
 
