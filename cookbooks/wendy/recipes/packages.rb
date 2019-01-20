@@ -414,12 +414,15 @@ package 'oracle-java8-installer'
 #
 # package "btsync"
 
-apt_repository 'daveg-attract' do
-  uri 'ppa:daveg/attract'
-  distribution node['lsb']['codename']
-end
+if node["platform_version"] == "16.04"
+  # There's no version of this for 18.04 from https://github.com/davewongillies
+  apt_repository 'daveg-attract' do
+    uri 'ppa:daveg/attract'
+    distribution node['lsb']['codename']
+  end
 
-package 'attract'
+  package 'attract'
+end
 
 # http://askubuntu.com/a/679519/14601
 apt_repository 'fingerprint-fprint' do
