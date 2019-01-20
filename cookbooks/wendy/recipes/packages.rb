@@ -690,9 +690,14 @@ python_runtime '2' do
 end
 
 python_package 'virtualenvwrapper'
-directory "#{base_homedir}/.virtualenvs"
+directory "#{base_homedir}/.virtualenvs" do
+  owner node['base_user']['username']
+  group node['base_user']['username']
+end
 file "#{base_homedir}/.virtualenvs/postmkvirtualenv" do
   content "pip install boto3\n"
+  owner node['base_user']['username']
+  group node['base_user']['username']
 end
 
 python_package 'awslogs'
