@@ -616,6 +616,25 @@ apt_repository 'gezakovacs-ppa' do
 end
 package 'unetbootin'
 
+# https://mkvtoolnix.download/downloads.html#ubuntu
+apt_repository 'mkvtoolnix' do
+  uri 'https://mkvtoolnix.download/ubuntu/'
+  distribution node['lsb']['codename']
+  components ['main']
+  arch 'amd64'
+  # key 'https://mkvtoolnix.download/gpg-pub-moritzbunkus.txt'
+  key 'D9199745B0545F2E8197062B0F92290A445B9007'
+end
+
+package "mkvtoolnix tools" do
+  package_name %w(
+    mkvtoolnix
+    mkvtoolnix-gui
+  )
+end
+
+
+
 ############################################################ Remote Binary ##########################################################
 
 packer_package_filename = "#{Chef::Config['file_cache_path']}/packer.zip"
