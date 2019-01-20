@@ -100,7 +100,6 @@ package 'base OS packages' do
     transmission-remote-gtk
     tree
     tvnamer
-    unetbootin
     unp
     unrar
     vbrfix
@@ -599,6 +598,13 @@ apt_repository 'signal' do
 end
 
 package 'signal-desktop'
+
+# We're installing this from ppa because it's missing from 18.04. It's present in 16.04 though
+apt_repository 'gezakovacs-ppa' do
+  uri 'ppa:gezakovacs/ppa'
+  distribution node['lsb']['codename']
+end
+package 'unetbootin'
 
 ############################################################ Remote Binary ##########################################################
 
