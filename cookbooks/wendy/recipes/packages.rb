@@ -290,7 +290,8 @@ end
 
 dpkg_package 'vidyodesktop' do
   source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
-  version vidyo_version
+  version vidyo_versionpackage 'yubikey-neo-manager'
+package 'yubioath-desktop'
   not_if "dpkg -s #{@name}"
 end
 
@@ -346,12 +347,14 @@ package ['yubikey-manager',
          'yubikey-manager-qt',
          'yubioath-desktop']
 
-apt_repository 'getdeb' do
-  uri 'http://archive.getdeb.net/ubuntu'
+apt_repository 'getdeb' do  # vulture-nethack
+  # http://www.webupd8.org/2010/05/getdeb-playdeb-repositories-down-what.html
+  # uri 'http://archive.getdeb.net/ubuntu'
+  uri 'http://mirrors.dotsrc.org/getdeb/ubuntu'
   distribution 'trusty-getdeb'
   components ['games']
-  key '46D7E7CF'
-  keyserver 'keyserver.ubuntu.com'
+  # key 'http://archive.getdeb.net/getdeb-archive.key'
+  key '1958A549614CE21CFC27F4BAA8A515F046D7E7CF'
   # MANUAL : vulture-nethack
   # This required manually running 'sudo apt-get update' to prevent the error
   # WARNING: The following packages cannot be authenticated!
