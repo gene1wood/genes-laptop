@@ -702,6 +702,8 @@ end
 
 python_package 'awslogs'
 python_package 'bugwarrior'
+python_package 'fork-github-repo'
+python_package 'youtube-dl'
 python_package 'pipenv'
 
 ############################################################ Ruby ###################################################################
