@@ -361,7 +361,13 @@ apt_repository 'getdeb' do  # vulture-nethack
   #    vulture-data vulture-nethack
   # STDERR: E: There are problems and -y was used without --force-yes
 end
-
+if node["platform_version"] == "18.04"
+  # https://www.linuxuprising.com/2018/05/fix-libpng12-0-missing-in-ubuntu-1804.html
+  remote_dpkg 'libpng12-0' do
+    source "http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb"
+    checksum "1644e3936830ed3cf3ab7fac64de99f38e16f7be001ce7947600789ce85e7bcc"
+  end
+end
 package 'vulture-nethack'
 
 # apt_repository 'vikoadi' do
