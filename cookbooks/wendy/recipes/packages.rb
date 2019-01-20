@@ -495,7 +495,7 @@ apt_repository 'eosrei-fonts' do
   distribution node['lsb']['codename']
 end
 
-package 'fonts-emojione-svginot'
+package 'fonts-twemoji-svginot'
 
 apt_repository 'ansible-ansible' do
   uri 'ppa:ansible/ansible'
