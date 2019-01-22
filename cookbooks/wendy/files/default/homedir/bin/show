@@ -17,6 +17,8 @@ if [ -e "$1" ]; then
     exit 1
   fi
   echo -n | openssl $action -in "$1" -noout -text
+elif [ "${1:0:5}" = "https" ]; then
+  curl --insecure -v $1 2>&1 | awk 'BEGIN { cert=0 } /^\* SSL connection/ { cert=1 } /^\*/ { if (cert) print }'
 else
   echo -n | openssl s_client -connect $1:443 | openssl x509 -text
 fi
