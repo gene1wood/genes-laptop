@@ -132,6 +132,8 @@ package 'base OS packages' do
   )
 end
 
+# MANUAL : Disable the print screen key for autokey : https://askubuntu.com/a/279572/14601
+
 if node["platform_version"] == "16.04"
   package "base #{node["platform_version"]} OS packages" do
     package_name %w(
@@ -329,10 +331,9 @@ dpkg_package 'ibus-gtk3' do
   source "#{Chef::Config['file_cache_path']}/#{ibus_filename}"
   # not_if "dpkg -s #{@name}"
   not_if { ::File.size?('/usr/lib/x86_64-linux-gnu/gtk-3.0/3.0.0/immodules/im-ibus.so') == 30744 }
+  # so we can't do file size comparison because the size doesn't change, nor the version. not sure what to do
+  # also it skips installation because it's already installed
 end
-
-
-
 
 
 ################################################## Apt Repos #####################################################
@@ -512,6 +513,13 @@ if node["platform_version"] == "18.04"
 end
 
 # https://github.com/eosrei/emojione-color-font
+# This causes a known issue with Firefox
+# https://github.com/eosrei/emojione-color-font/issues/51#issuecomment-239117267
+# https://github.com/eosrei/emojione-color-font#known-issues
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1245811
+# https://github.com/eosrei/emojione-color-font/issues/31
+# That must be worked around in Firefox by setting about:config
+# gfx.font_rendering.fontconfig.fontlist.enabled : False
 apt_repository 'eosrei-fonts' do
   uri 'ppa:eosrei/fonts'
   distribution node['lsb']['codename']
@@ -738,7 +746,7 @@ python_package 'pipenv'
 # jetbrains intellij idea
 # pycharm
 # webstorm
-# rubymine
+# rubymine*
 # phpstorm with snap
 # https://www.jetbrains.com/phpstorm/download/#section=linux
 #
@@ -756,3 +764,5 @@ python_package 'pipenv'
 #   https://askubuntu.com/a/967207/14601
 # https://extensions.gnome.org/extension/120/system-monitor/
 #   https://askubuntu.com/a/974204/14601
+# TODO : Add Arduino IDE
+# /opt/arduino/install.sh
