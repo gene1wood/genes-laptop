@@ -35,17 +35,17 @@ file '/etc/sudoers.d/custom' do
 end
 
 include_recipe 'firewall::default'
-
 include_recipe 'wendy::packages'
 include_recipe 'wendy::sublimetext'
 include_recipe 'wendy::chrome'
 include_recipe 'wendy::git'
-include_recipe 'wendy::sparkleshare'
+# include_recipe 'wendy::sparkleshare'  # Maybe we don't need this now with keybase?
+include_recipe 'wendy::firewall'
 include_recipe 'wendy::publicaccess'
 include_recipe 'wendy::tinc'
 include_recipe 'wendy::apache'
 include_recipe 'wendy::tools'
-include_recipe 'wendy::firewall'
+include_recipe 'wendy::services'
 include_recipe 'wendy::fonts'
 include_recipe 'wendy::teamviewer'
 include_recipe 'wendy::inkscape'
