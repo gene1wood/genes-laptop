@@ -729,14 +729,14 @@ execute "unzip packer" do
 end
 
 remote_file '/usr/local/bin/docker-compose' do
-  source 'https://github.com/docker/compose/releases/download/1.21.2/docker-compose-Linux-x86_64'
-  checksum '8a11713e11ed73abcb3feb88cd8b5674b3320ba33b22b2ba37915b4ecffdf042'
+  source 'https://github.com/docker/compose/releases/download/1.23.1/docker-compose-Linux-x86_64'
+  checksum 'c176543737b8aea762022245f0f4d58781d3cb1b072bc14f3f8e5bb96f90f1a2'
   mode "0755"
 end
 
 remote_file "/etc/bash_completion.d/docker-compose" do
-  source "https://raw.githubusercontent.com/docker/compose/1.21.2/contrib/completion/bash/docker-compose"
-  checksum '618ef7a88b4090a5e5708b5f44b18b3c811d8d6c98465977aa64fde39c6e7455'
+  source "https://raw.githubusercontent.com/docker/compose/1.23.1/contrib/completion/bash/docker-compose"
+  checksum '5cec8b883c26f00e45f472c6024f4d367e555c8f48956220bdb16f0298798452'
   mode "0644"
 end
 
