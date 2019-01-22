@@ -55,7 +55,10 @@ include_recipe 'wendy::inkscape'
 # include_recipe 'wendy::desktop'
 # include_recipe 'wendy::desktoptest'
 
-
+cookbook_file '/etc/ImageMagick-6/policy.xml' do
+    source name[1..-1]
+    mode '0644'
+end
 
 
 template "#{base_homedir}/.gnupg/gpg.conf" do
