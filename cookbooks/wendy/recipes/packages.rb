@@ -121,6 +121,14 @@ package 'base OS packages' do
     gir1.2-gtop-2.0
     gir1.2-networkmanager-1.0
     gir1.2-clutter-1.0
+    flashplugin-installer
+    colordiff
+    calibre
+    texlive-extra-utils
+    lm-sensors
+    autokey-gtk
+    mp3info
+    gnome-clocks
   )
 end
 
@@ -168,6 +176,8 @@ if node["platform_version"] == "18.04"
     )
   end
 end
+
+# heroku : See mozilla.rb
 
 #################################################### Remote Dpkg Files ##########################################################
 
@@ -265,6 +275,8 @@ remote_dpkg 'python3-multibootusb' do
   #action :install # auto updates itself so we should skip this if it's installed
 end
 
+# zoom : See mozilla.rb
+
 # MANUAL : pdftk
 # Currently pdftk is missing for 18.04
 # The workaround is to install manually like this : https://bugs.launchpad.net/ubuntu/+source/pdftk/+bug/1764450/comments/4
@@ -297,12 +309,7 @@ cookbook_file "#{Chef::Config['file_cache_path']}/#{vidyo_filename}" do
   source vidyo_filename
 end
 
-dpkg_package 'vidyodesktop' do
-  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
-  version vidyo_versionpackage 'yubikey-neo-manager'
-package 'yubioath-desktop'
-  not_if "dpkg -s #{@name}"
-end
+# Vidyo : See mozilla.rb
 
 # https://bugzilla.mozilla.org/show_bug.cgi?id=701083#c98
 file '/etc/xdg/autostart/VidyoDesktop.desktop' do
@@ -355,6 +362,9 @@ end
 package ['yubikey-manager',
          'yubikey-manager-qt',
          'yubioath-desktop']
+
+package 'yubikey-neo-manager'
+package 'yubioath-desktop'
 
 apt_repository 'getdeb' do  # vulture-nethack
   # http://www.webupd8.org/2010/05/getdeb-playdeb-repositories-down-what.html
@@ -671,6 +681,17 @@ end
 execute "unzip terraform" do
   command "unzip #{terraform_package_filename} -d /usr/local/bin"
   action :nothing
+end
+
+# https://rtyley.github.io/bfg-repo-cleaner/
+remote_file "/usr/local/bin/bfg-1.13.0.jar" do
+  source "http://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"
+  # checksum '5cec8b883c26f00e45f472c6024f4d367e555c8f48956220bdb16f0298798452'
+  mode "0644"
+end
+
+link "/usr/local/bin/bfg.jar" do
+  to "/usr/local/bin/bfg-1.13.0.jar"
 end
 
 ############################################################ Manual Apt Repo ########################################################

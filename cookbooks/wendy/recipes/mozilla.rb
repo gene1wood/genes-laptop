@@ -5,6 +5,26 @@ cookbook_file "#{base_homedir}/.migrc" do
   group node['base_user']['username']
 end
 
+# https://devcenter.heroku.com/articles/heroku-cli#download-and-install
+snap "heroku" do
+  classic true
+end
+# TODO : Create ~/.netrc file with API keys (possibly GPG encrypted)
+# https://devcenter.heroku.com/articles/authentication
+
+package ['libxcb-xtest0']
+remote_dpkg 'zoom' do
+  source "https://auth0.zoom.us/client/latest/zoom_amd64.deb"
+  checksum '90b495b26f1c54363bc06985b808d6dee328822f5123734d742fd12fa9e38695'
+end
+
+dpkg_package 'vidyodesktop' do
+  source "#{Chef::Config['file_cache_path']}/#{vidyo_filename}"
+  version vidyo_version
+  not_if "dpkg -s #{@name}"
+end
+
+include_recipe 'wendy::crashplan'
 
 
 # MANUAL : mig-loader
