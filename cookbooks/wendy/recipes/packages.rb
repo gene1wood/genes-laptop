@@ -662,6 +662,57 @@ end
 # package 'ukuu'
 # package 'libelf-dev'  # I'm seeing errors from vboxdrv.service in /var/log/vbox-setup.log when booting from the 4.14 kernel indicating this is needed
 
+# https://github.com/ValveSoftware/Proton/wiki/Requirements
+apt_repository 'graphics-drivers-ppa' do
+  uri 'ppa:graphics-drivers/ppa'
+  distribution node['lsb']['codename']
+end
+package "nvidia package set 1" do
+  package_name %w(
+    libnvidia-cfg1-415
+    libnvidia-common-415
+    libnvidia-compute-415
+    libnvidia-compute-415:i386
+    libnvidia-decode-415
+    libnvidia-decode-415:i386
+    libnvidia-encode-415
+    libnvidia-encode-415:i386
+    libnvidia-fbc1-415
+    libnvidia-fbc1-415:i386
+    libnvidia-gl-415
+    libnvidia-gl-415:i386
+    libnvidia-ifr1-415
+    libnvidia-ifr1-415:i386
+    libvulkan1
+    libxnvctrl0
+    nvidia-compute-utils-415
+    nvidia-dkms-415
+    nvidia-driver-415
+    nvidia-kernel-common-415
+    nvidia-kernel-source-415
+    nvidia-settings
+    nvidia-utils-415
+    xserver-xorg-video-nvidia-415
+  )
+  action :upgrade
+end
+package "nvidia package set 2" do
+  package_name %w(
+    nvidia-driver-415
+    xserver-xorg-video-nvidia-415
+    libnvidia-cfg1-415
+  )
+end
+apt_repository 'paulo-miguel-dias-mesa' do
+  uri 'ppa:paulo-miguel-dias/mesa'
+  distribution node['lsb']['codename']
+end
+package "mesa vulkan packages" do
+  package_name %w(
+    mesa-vulkan-drivers
+    mesa-vulkan-drivers:i386
+  )
+end
 
 ############################################################ Remote Binary ##########################################################
 
