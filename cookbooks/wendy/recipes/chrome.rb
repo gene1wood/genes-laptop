@@ -66,7 +66,7 @@ node['firefox']['profiles'].each do |profile|
         user node['base_user']['username']
         group node['base_user']['username']
         environment ({:HOME => base_homedir})
-        creates "#{base_homedir}/.local/share/applications/firefox-#{profile}.desktop"
+        creates "#{base_homedir}/.local/share/applications/firefox/firefox-#{profile}.desktop"
         action :nothing
     end
 
@@ -94,3 +94,5 @@ end
 # https://addons.mozilla.org/en-US/firefox/addon/rehost-image/
 # For 18.04:
 # https://addons.mozilla.org/en-GB/firefox/addon/gnome-shell-integration/
+# MANUAL : about:config
+#   accessibility.typeaheadfind.enablesound : False
