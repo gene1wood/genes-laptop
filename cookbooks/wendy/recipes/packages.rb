@@ -651,6 +651,16 @@ package "mkvtoolnix tools" do
   )
 end
 
+# This didn't work Workaround for inability to suspend
+# https://askubuntu.com/a/1038528/14601
+# https://people.canonical.com/~khfeng/lp1774950/
+# https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1774950?comments=all
+# apt_repository 'teejee2008-ppa' do
+#   uri 'ppa:teejee2008/ppa'
+#   distribution node['lsb']['codename']
+# end
+# package 'ukuu'
+# package 'libelf-dev'  # I'm seeing errors from vboxdrv.service in /var/log/vbox-setup.log when booting from the 4.14 kernel indicating this is needed
 
 
 ############################################################ Remote Binary ##########################################################
